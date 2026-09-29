@@ -1638,6 +1638,347 @@
           line-height: 1.55 !important;
         }
       }
+
+      /* =====================================================
+           FINAL PHONE UX LAYER
+           Desktop styles are intentionally untouched.
+           ===================================================== */
+      html.is-mobile-device body {
+        overflow-x: hidden;
+      }
+
+      html.is-mobile-device #main-header {
+        height: 72px;
+        min-height: 72px;
+        width: 100%;
+        left: 0;
+        right: 0;
+      }
+
+      html.is-mobile-device .header-inner {
+        min-height: 72px;
+        height: 72px;
+        padding: 8px 16px;
+        gap: 13px;
+      }
+
+      html.is-mobile-device .menu-icon {
+        width: 38px;
+        min-width: 38px;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      html.is-mobile-device .logo-container {
+        min-width: 0;
+        max-width: calc(100vw - 72px);
+        gap: 2px;
+      }
+
+      html.is-mobile-device .logo-container img {
+        height: 31px;
+        max-width: 45px;
+        object-fit: contain;
+      }
+
+      html.is-mobile-device .logo-container span {
+        font-size: clamp(1.02rem, 4.5vw, 1.3rem);
+        line-height: 1;
+        letter-spacing: 0.25px;
+        white-space: nowrap;
+      }
+
+      /* Clean left-side navigation drawer */
+      html.is-mobile-device nav#navbar {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        width: min(82vw, 390px);
+        height: calc(100svh - 72px);
+        max-height: none;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        background: var(--nav-bg);
+        border-top: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        box-shadow: 12px 0 35px rgba(0, 0, 0, 0.18);
+        transform: translateX(-105%);
+        opacity: 0;
+        transition:
+          transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.2s ease;
+        z-index: 10000;
+        pointer-events: none;
+      }
+
+      html.is-mobile-device nav#navbar.open {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      html.is-mobile-device nav#navbar ul.nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        padding: 8px 0 22px;
+      }
+
+      html.is-mobile-device nav#navbar ul.nav-links > li {
+        width: 100%;
+        display: block;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      html.is-mobile-device nav#navbar ul.nav-links > li > a {
+        display: flex;
+        align-items: center;
+        min-height: 58px;
+        width: 100%;
+        padding: 15px 22px;
+        font-size: 1.08rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-align: left;
+      }
+
+      html.is-mobile-device nav#navbar .dropdown-menu {
+        position: static;
+        display: block;
+        width: 100%;
+        padding: 0 0 6px 0;
+        margin: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: 0;
+      }
+
+      html.is-mobile-device nav#navbar .dropdown-menu li {
+        width: 100%;
+        border: 0;
+      }
+
+      html.is-mobile-device nav#navbar .dropdown-menu li a {
+        min-height: 45px;
+        padding: 11px 22px 11px 42px;
+        font-size: 0.94rem;
+        font-weight: 600;
+        opacity: 0.82;
+      }
+
+      /* Hero becomes a deliberate intro panel, not a giant spacer. */
+      html.is-mobile-device #intro-section {
+        min-height: 56svh;
+        height: 56svh;
+        margin: 0;
+        padding: 0;
+      }
+
+      html.is-mobile-device .image-container {
+        height: 100%;
+      }
+
+      html.is-mobile-device .img-wrapper {
+        width: clamp(68px, 18vw, 86px);
+        height: clamp(68px, 18vw, 86px);
+      }
+
+      html.is-mobile-device .scattered .img-1 {
+        left: 20%;
+        top: 20%;
+      }
+
+      html.is-mobile-device .scattered .img-2 {
+        left: 50%;
+        top: 78%;
+      }
+
+      html.is-mobile-device .scattered .img-3 {
+        left: 80%;
+        top: 20%;
+      }
+
+      html.is-mobile-device .title-svg {
+        width: 92vw;
+        height: 180px;
+        max-width: 560px;
+      }
+
+      html.is-mobile-device .mobile-title {
+        font-size: clamp(108px, 29vw, 150px);
+      }
+
+      html.is-mobile-device .sub-text-svg {
+        font-size: clamp(18px, 5vw, 25px);
+      }
+
+      /* Information slides become proper full-screen mobile cards. */
+      html.is-mobile-device #slider-section {
+        position: relative;
+        width: 100%;
+        min-height: calc(100svh - 72px);
+        height: calc(100svh - 72px);
+        padding: 0 7vw;
+        margin: 0;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      html.is-mobile-device .slide {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        padding: 10svh 7vw 13svh;
+        margin: 0;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: left;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      html.is-mobile-device .slide.active {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        padding: 10svh 7vw 13svh;
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      html.is-mobile-device .slide h2 {
+        width: 100%;
+        margin: 0 0 24px;
+        padding: 0;
+        font-size: clamp(2.9rem, 13vw, 4.25rem);
+        line-height: 0.9;
+        letter-spacing: 1px;
+        text-align: left;
+        flex: 0 0 auto;
+      }
+
+      html.is-mobile-device .slide p {
+        width: 100%;
+        max-width: none;
+        margin: 0 0 18px;
+        font-size: clamp(1.08rem, 4.8vw, 1.35rem);
+        line-height: 1.62;
+        text-align: left;
+        flex: 0 0 auto;
+      }
+
+      html.is-mobile-device .slide ul {
+        width: 100%;
+        max-width: none;
+        margin: 4px 0 0;
+        padding-left: 0;
+        font-size: clamp(1.05rem, 4.5vw, 1.28rem);
+        line-height: 1.58;
+        text-align: left;
+        flex: 0 0 auto;
+      }
+
+      html.is-mobile-device .slide li {
+        margin: 0 0 13px;
+      }
+
+      html.is-mobile-device .slide strong {
+        font-weight: 800;
+      }
+
+      html.is-mobile-device .slide ul[style*="max-width: 580px"] {
+        width: 100%;
+        max-width: none !important;
+        margin: 0;
+        padding: 20px 18px !important;
+        border-radius: 14px;
+      }
+
+      html.is-mobile-device .slide ul[style*="columns: 2"] {
+        columns: 1 !important;
+        column-count: 1 !important;
+      }
+
+      html.is-mobile-device .iso-cert-container {
+        width: min(100%, 290px);
+        margin: 10px auto 0;
+        align-self: center;
+      }
+
+      /* Dots live at the bottom of the card, always visible. */
+      html.is-mobile-device .dots-container {
+        position: absolute;
+        z-index: 30;
+        left: 0;
+        right: 0;
+        bottom: 24px;
+        width: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        transform: none;
+        pointer-events: auto;
+      }
+
+      html.is-mobile-device .dot {
+        width: 9px;
+        height: 9px;
+        min-width: 9px;
+        border-radius: 50%;
+      }
+
+      /* Prevent accidental horizontal overflow from long headings. */
+      html.is-mobile-device .slide,
+      html.is-mobile-device .slide * {
+        max-width: 100%;
+      }
+
+      @media (max-width: 430px) {
+        html.is-mobile-device #intro-section {
+          min-height: 52svh;
+          height: 52svh;
+        }
+
+        html.is-mobile-device #slider-section {
+          min-height: calc(100svh - 72px);
+          height: calc(100svh - 72px);
+        }
+
+        html.is-mobile-device .slide,
+        html.is-mobile-device .slide.active {
+          padding: 8svh 6vw 13svh;
+        }
+
+        html.is-mobile-device .slide h2 {
+          font-size: clamp(2.65rem, 12vw, 3.5rem);
+          margin-bottom: 20px;
+        }
+
+        html.is-mobile-device .slide p {
+          font-size: clamp(1.03rem, 4.65vw, 1.18rem);
+          line-height: 1.58;
+          margin-bottom: 16px;
+        }
+
+        html.is-mobile-device .slide ul {
+          font-size: clamp(1rem, 4.35vw, 1.14rem);
+          line-height: 1.54;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2525,7 +2866,8 @@
           ) ||
           touchPhone ||
           window.innerWidth <= 950;
-        if (mobile) document.body.classList.add("is-mobile-device");
+        document.documentElement.classList.toggle("is-mobile-device", mobile);
+        document.body.classList.toggle("is-mobile-device", mobile);
       })();
     </script>
 
@@ -2593,6 +2935,54 @@
         clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, 5000);
       }
+
+      // Phone swipe navigation for the main information cards.
+      (function enableMobileSlideSwipe() {
+        let startX = 0;
+        let startY = 0;
+        let tracking = false;
+        const slider = document.getElementById("slider-section");
+        if (!slider) return;
+
+        slider.addEventListener(
+          "touchstart",
+          function (e) {
+            if (
+              !document.documentElement.classList.contains("is-mobile-device")
+            )
+              return;
+            if (!e.touches || e.touches.length !== 1) return;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            tracking = true;
+          },
+          { passive: true },
+        );
+
+        slider.addEventListener(
+          "touchend",
+          function (e) {
+            if (
+              !tracking ||
+              !document.documentElement.classList.contains("is-mobile-device")
+            )
+              return;
+            tracking = false;
+            if (!e.changedTouches || !e.changedTouches.length) return;
+
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const dx = endX - startX;
+            const dy = endY - startY;
+
+            if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+
+            if (dx < 0) nextSlide();
+            else goToSlide((currentSlide - 1 + slides.length) % slides.length);
+          },
+          { passive: true },
+        );
+      })();
 
       document.addEventListener("DOMContentLoaded", () => {
         const themeToggle = document.getElementById("theme-toggle");
