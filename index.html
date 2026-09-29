@@ -1980,6 +1980,177 @@
         }
       }
     </style>
+
+    <style id="mobile-industry-final">
+      /* =========================================================
+   INDUSTRY-READY PHONE SLIDES
+   PHONE ONLY. DESKTOP RULES ARE NOT MODIFIED.
+   ========================================================= */
+      html.is-mobile-device #slider-section {
+        position: relative !important;
+        width: 100% !important;
+        height: calc(100svh - 72px) !important;
+        min-height: calc(100svh - 72px) !important;
+        max-height: calc(100svh - 72px) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        overflow: hidden !important;
+        background: var(--bg-color) !important;
+      }
+
+      html.is-mobile-device #slider-section .slide,
+      html.is-mobile-device #slider-section .slide.active {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        margin: 0 !important;
+        padding: clamp(34px, 7svh, 58px) 7vw 78px !important;
+        display: none !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: none !important;
+      }
+
+      html.is-mobile-device #slider-section .slide.active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 5 !important;
+      }
+
+      /* Strong editorial heading at the top of every phone slide. */
+      html.is-mobile-device #slider-section .slide h2 {
+        width: 100% !important;
+        margin: 0 0 clamp(18px, 3.5svh, 28px) !important;
+        padding: 0 !important;
+        font-family: "Bebas Neue", sans-serif !important;
+        font-size: clamp(3.25rem, 14vw, 4.5rem) !important;
+        line-height: 0.86 !important;
+        letter-spacing: 1.5px !important;
+        text-align: left !important;
+        flex: 0 0 auto !important;
+      }
+
+      /* Comfortable reading size, not desktop text squeezed into a phone. */
+      html.is-mobile-device #slider-section .slide p {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 0 18px !important;
+        padding: 0 !important;
+        font-family: "Inter", sans-serif !important;
+        font-size: clamp(1.08rem, 4.75vw, 1.28rem) !important;
+        line-height: 1.62 !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        flex: 0 0 auto !important;
+      }
+
+      html.is-mobile-device #slider-section .slide ul {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 3px 0 0 !important;
+        padding: 0 !important;
+        font-family: "Inter", sans-serif !important;
+        font-size: clamp(1.06rem, 4.55vw, 1.24rem) !important;
+        line-height: 1.6 !important;
+        text-align: left !important;
+      }
+
+      html.is-mobile-device #slider-section .slide li {
+        margin: 0 0 14px !important;
+        padding: 0 !important;
+      }
+
+      html.is-mobile-device #slider-section .slide strong {
+        font-weight: 800 !important;
+      }
+
+      /* Registration card and ISO certificate use the full readable width. */
+      html.is-mobile-device
+        #slider-section
+        .slide
+        ul[style*="max-width: 580px"] {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 18px !important;
+        border-radius: 14px !important;
+      }
+
+      html.is-mobile-device #slider-section .iso-cert-container {
+        width: min(100%, 330px) !important;
+        max-width: 330px !important;
+        margin: 4px auto 0 !important;
+        align-self: center !important;
+      }
+
+      /* Navigation dots belong to the phone viewport, not the text flow. */
+      html.is-mobile-device #slider-section .dots-container {
+        position: absolute !important;
+        left: 50% !important;
+        bottom: 18px !important;
+        transform: translateX(-50%) !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 7px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        z-index: 50 !important;
+        border-radius: 30px !important;
+        background: color-mix(
+          in srgb,
+          var(--bg-color) 82%,
+          transparent
+        ) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+      }
+
+      html.is-mobile-device #slider-section .dot {
+        width: 10px !important;
+        height: 10px !important;
+        min-width: 10px !important;
+        min-height: 10px !important;
+      }
+
+      /* The slide itself is the swipe surface. */
+      html.is-mobile-device #slider-section .slide::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
+      }
+
+      /* Small phones: preserve the full-screen composition without crushing text. */
+      @media (max-width: 380px) {
+        html.is-mobile-device #slider-section .slide,
+        html.is-mobile-device #slider-section .slide.active {
+          padding-left: 6vw !important;
+          padding-right: 6vw !important;
+          padding-top: 30px !important;
+        }
+        html.is-mobile-device #slider-section .slide h2 {
+          font-size: clamp(3rem, 14vw, 3.8rem) !important;
+          margin-bottom: 17px !important;
+        }
+        html.is-mobile-device #slider-section .slide p,
+        html.is-mobile-device #slider-section .slide li {
+          font-size: 1.06rem !important;
+          line-height: 1.58 !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Theme Toggle -->
