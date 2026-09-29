@@ -3201,4 +3201,165 @@
       });
     </script>
   </body>
+  <style id="mobile-responsive-final">
+    /* =========================================================
+   FINAL RESPONSIVE PHONE TYPOGRAPHY + VIEWPORT SYSTEM
+   PHONE ONLY. DESKTOP IS NOT TOUCHED.
+   ========================================================= */
+    html.is-mobile-device #slider-section {
+      width: 100vw !important;
+      height: 100svh !important;
+      min-height: 100svh !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+
+    html.is-mobile-device #slider-section .slide,
+    html.is-mobile-device #slider-section .slide.active {
+      box-sizing: border-box !important;
+      width: 100vw !important;
+      height: 100svh !important;
+      min-height: 100svh !important;
+      max-height: none !important;
+      padding: clamp(88px, 12svh, 118px) clamp(20px, 6vw, 30px)
+        clamp(82px, 11svh, 105px) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+    }
+
+    html.is-mobile-device #slider-section .slide::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    html.is-mobile-device #slider-section .slide h2 {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 0 clamp(22px, 4.5svh, 34px) !important;
+      font-size: clamp(3.15rem, 13vw, 4.6rem) !important;
+      line-height: 0.88 !important;
+      letter-spacing: 0.5px !important;
+      overflow-wrap: anywhere !important;
+      word-break: normal !important;
+      text-wrap: balance !important;
+    }
+
+    html.is-mobile-device #slider-section .slide p {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 0 clamp(18px, 3.2svh, 25px) !important;
+      font-size: clamp(1.13rem, 4.9vw, 1.38rem) !important;
+      line-height: 1.68 !important;
+      letter-spacing: 0.05px !important;
+      overflow-wrap: break-word !important;
+      word-break: normal !important;
+      text-wrap: pretty !important;
+    }
+
+    html.is-mobile-device #slider-section .slide ul {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 2px 0 0 !important;
+      padding: 0 !important;
+      font-size: clamp(1.11rem, 4.75vw, 1.34rem) !important;
+      line-height: 1.65 !important;
+    }
+
+    html.is-mobile-device #slider-section .slide li {
+      width: 100% !important;
+      margin: 0 0 clamp(13px, 2.4svh, 20px) !important;
+      padding: 0 !important;
+      overflow-wrap: break-word !important;
+    }
+
+    html.is-mobile-device #slider-section .slide strong {
+      font-weight: 800 !important;
+    }
+
+    /* Long registration lists remain readable instead of becoming tiny cards. */
+    html.is-mobile-device #slider-section .slide ul[style*="max-width: 580px"] {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: clamp(17px, 4vw, 24px) !important;
+      margin: 0 !important;
+      font-size: clamp(1.02rem, 4.45vw, 1.25rem) !important;
+      line-height: 1.58 !important;
+    }
+
+    html.is-mobile-device #slider-section .iso-cert-container {
+      max-width: min(78vw, 330px) !important;
+      width: min(78vw, 330px) !important;
+      margin: 8px auto 0 !important;
+    }
+
+    /* Dots are anchored to the actual phone viewport. */
+    html.is-mobile-device #slider-section .dots-container {
+      left: 50% !important;
+      right: auto !important;
+      bottom: max(14px, env(safe-area-inset-bottom)) !important;
+      transform: translateX(-50%) !important;
+      padding: 8px 13px !important;
+      gap: 10px !important;
+      z-index: 100 !important;
+    }
+
+    /* Small phones: use width-derived type without causing horizontal overflow. */
+    @media (max-width: 390px) {
+      html.is-mobile-device #slider-section .slide,
+      html.is-mobile-device #slider-section .slide.active {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+        padding-top: 84px !important;
+      }
+
+      html.is-mobile-device #slider-section .slide h2 {
+        font-size: clamp(2.85rem, 12.5vw, 3.45rem) !important;
+        margin-bottom: 20px !important;
+      }
+
+      html.is-mobile-device #slider-section .slide p {
+        font-size: clamp(1.08rem, 4.65vw, 1.18rem) !important;
+        line-height: 1.64 !important;
+      }
+
+      html.is-mobile-device #slider-section .slide ul {
+        font-size: clamp(1.06rem, 4.55vw, 1.16rem) !important;
+      }
+    }
+
+    /* Very narrow screens: keep every character inside the viewport. */
+    @media (max-width: 340px) {
+      html.is-mobile-device #slider-section .slide h2 {
+        font-size: 2.7rem !important;
+      }
+      html.is-mobile-device #slider-section .slide p,
+      html.is-mobile-device #slider-section .slide li {
+        font-size: 1rem !important;
+        line-height: 1.58 !important;
+      }
+    }
+  </style>
+
+  <script id="mobile-responsive-final-js">
+    (function () {
+      function applyMobileReadingMode() {
+        if (!document.documentElement.classList.contains("is-mobile-device"))
+          return;
+        /* Mobile readers should control the slide manually while reading. */
+        if (typeof slideInterval !== "undefined") clearInterval(slideInterval);
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", applyMobileReadingMode, {
+          once: true,
+        });
+      } else {
+        applyMobileReadingMode();
+      }
+    })();
+  </script>
 </html>
