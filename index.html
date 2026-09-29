@@ -1503,6 +1503,142 @@
         }
       }
     </style>
+
+    <style id="mobile-final-ratio-fix">
+      /* ==========================================================
+           PHONE-ONLY RATIO / SPACING FIX
+           Desktop CSS is intentionally untouched.
+           ========================================================== */
+      html.is-mobile-device #intro-section {
+        height: 64svh !important;
+        min-height: 64svh !important;
+        max-height: 64svh !important;
+        padding: 0 !important;
+      }
+
+      html.is-mobile-device #intro-section .title-svg {
+        width: 92vw !important;
+        max-width: 520px !important;
+        height: 185px !important;
+      }
+
+      html.is-mobile-device #intro-section .mobile-title {
+        font-size: clamp(96px, 25vw, 126px) !important;
+        letter-spacing: 1px !important;
+      }
+
+      html.is-mobile-device #intro-section .sub-text-svg {
+        font-size: clamp(20px, 5vw, 25px) !important;
+        letter-spacing: 2.5px !important;
+      }
+
+      /* Bring the information section immediately after the hero. */
+      html.is-mobile-device #slider-section {
+        padding: 22px 5vw 34px !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: block !important;
+      }
+
+      /* Each slide is content-sized, never a hidden 100vh desktop panel. */
+      html.is-mobile-device #slider-section .slide,
+      html.is-mobile-device #slider-section .slide.active {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        overflow: visible !important;
+        text-align: center !important;
+      }
+
+      html.is-mobile-device #slider-section .slide h2 {
+        width: 100% !important;
+        margin: 0 0 17px !important;
+        font-size: clamp(3.15rem, 14vw, 4.25rem) !important;
+        line-height: 0.9 !important;
+        letter-spacing: 1.5px !important;
+      }
+
+      html.is-mobile-device #slider-section .slide p,
+      html.is-mobile-device #slider-section .slide li {
+        width: 100% !important;
+        font-size: clamp(1.08rem, 4.7vw, 1.25rem) !important;
+        line-height: 1.58 !important;
+        font-weight: 500 !important;
+      }
+
+      html.is-mobile-device #slider-section .slide p {
+        max-width: none !important;
+        margin: 0 auto 14px !important;
+      }
+
+      html.is-mobile-device #slider-section .slide ul {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 4px 0 0 !important;
+        padding: 17px 18px !important;
+        font-size: clamp(1.06rem, 4.55vw, 1.22rem) !important;
+        line-height: 1.55 !important;
+      }
+
+      html.is-mobile-device #slider-section .slide li {
+        margin-bottom: 10px !important;
+      }
+
+      html.is-mobile-device #slider-section .slide.active + .slide {
+        /* inactive slides remain completely out of the document flow */
+        position: absolute !important;
+      }
+
+      html.is-mobile-device #slider-section .dots-container {
+        position: relative !important;
+        width: 100% !important;
+        margin: 20px auto 0 !important;
+        left: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+      }
+
+      html.is-mobile-device #slider-section .dot {
+        width: 10px !important;
+        height: 10px !important;
+      }
+
+      /* Slightly tighter composition on small phones. */
+      @media (max-width: 430px) {
+        html.is-mobile-device #intro-section {
+          height: 61svh !important;
+          min-height: 61svh !important;
+          max-height: 61svh !important;
+        }
+        html.is-mobile-device #intro-section .title-svg {
+          height: 170px !important;
+        }
+        html.is-mobile-device #intro-section .mobile-title {
+          font-size: clamp(88px, 24vw, 112px) !important;
+        }
+        html.is-mobile-device #slider-section {
+          padding-top: 18px !important;
+        }
+        html.is-mobile-device #slider-section .slide h2 {
+          font-size: clamp(2.9rem, 13.5vw, 3.7rem) !important;
+          margin-bottom: 14px !important;
+        }
+        html.is-mobile-device #slider-section .slide p,
+        html.is-mobile-device #slider-section .slide li {
+          font-size: clamp(1.03rem, 4.55vw, 1.16rem) !important;
+          line-height: 1.55 !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Theme Toggle -->
