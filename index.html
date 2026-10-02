@@ -182,6 +182,15 @@
         text-overflow: ellipsis;
       }
 
+      /* Desktop version of logo title text */
+      .logo-title-desktop {
+        display: inline;
+      }
+      /* Mobile version of logo title text (hidden by default on desktop) */
+      .logo-title-mobile {
+        display: none;
+      }
+
       nav#navbar {
         display: flex;
         justify-content: flex-end;
@@ -840,6 +849,14 @@
           font-size: clamp(10px, 3.8vw, 15px);
         }
 
+        /* Show mobile title (without trailing dot), hide desktop title */
+        .logo-title-desktop {
+          display: none;
+        }
+        .logo-title-mobile {
+          display: inline;
+        }
+
         /* Mobile Drawer */
         nav#navbar {
           position: absolute;
@@ -1002,7 +1019,7 @@
         }
 
         .intro-heading {
-          font-size: clamp(13px, 6.2vw, 40px);
+          font-size: clamp(14px, 6.2vw, 40px);
           letter-spacing: 0.5px;
         }
         .intro-tagline {
@@ -1116,7 +1133,12 @@
             alt="Company Logo"
             onerror="this.style.display = 'none'"
           />
-          <span class="logo-title">MARVELOUS PRECISION PVT. LTD.</span>
+          <span class="logo-title">
+            <span class="logo-title-desktop"
+              >MARVELOUS PRECISION PVT. LTD.</span
+            >
+            <span class="logo-title-mobile">MARVELOUS PRECISION PVT. LTD</span>
+          </span>
         </div>
       </div>
 
