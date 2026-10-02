@@ -412,6 +412,7 @@
         transition: all 0.4s ease-out;
         pointer-events: none;
         overflow-y: auto;
+        cursor: pointer; /* Indicates that slides can be tapped/clicked */
       }
       .slide.active {
         opacity: 1;
@@ -1422,15 +1423,10 @@
             automotive, hydraulics, power transmission, agriculture machinery
             and custom OEMs.
           </p>
-          <p
-            style="
-              color: #d50000;
-              font-weight: 700;
-              margin-top: 15px;
-              font-style: italic;
-            "
-          >
-            Quintessence of our business is ‘Just in Time’ delivery!
+          <p>
+            <strong style="color: #d50000; font-style: italic"
+              >Quintessence of our business is ‘Just in Time’ delivery!</strong
+            >
           </p>
         </div>
 
@@ -2184,6 +2180,12 @@
         slideInterval = setInterval(nextSlide, 5000);
       }
 
+      // Function to advance to the next slide on tap/click
+      function advanceSlide() {
+        let nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const themeToggle = document.getElementById("theme-toggle");
         themeToggle.addEventListener("click", () => {
@@ -2215,6 +2217,11 @@
         );
 
         slideInterval = setInterval(nextSlide, 5000);
+
+        // Add event listener to each slide so clicking/tapping transitions to the next
+        slides.forEach((slide) => {
+          slide.addEventListener("click", advanceSlide);
+        });
 
         const interactiveItems = document.querySelectorAll(".interactive-item");
         interactiveItems.forEach((item) => {
