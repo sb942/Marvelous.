@@ -11,11 +11,27 @@
     />
 
     <style>
+      /* COMPLETE SITE LOCK: Prevents text selection, highlighting, and mobile long-press menus */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none; /* Disable iOS callout */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old Firefox */
+        -ms-user-select: none; /* IE/Edge */
+        user-select: none; /* Standard */
+      }
+
+      /* Lock all images from being dragged or saved */
+      img {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
       }
 
       :root {
@@ -45,6 +61,7 @@
           background-color 0.3s ease,
           color 0.3s ease;
         scroll-behavior: smooth;
+        cursor: default; /* Forces normal cursor instead of text caret */
       }
 
       /* VIEW SWITCHER LOGIC */
@@ -106,16 +123,6 @@
           box-shadow: none;
           opacity: 0.22;
           font-size: 0;
-          transition:
-            opacity 0.25s ease,
-            transform 0.25s ease;
-        }
-
-        #theme-toggle:hover,
-        #theme-toggle:focus-visible {
-          opacity: 0.5;
-          transform: scale(1.08);
-          outline: none;
         }
       }
 
@@ -145,6 +152,7 @@
         cursor: pointer;
         z-index: 9001;
         flex-shrink: 0;
+        overflow: hidden;
       }
 
       .menu-icon {
@@ -155,34 +163,23 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        max-width: 100%;
       }
       .logo-container img {
         height: 35px;
         width: auto;
         object-fit: contain;
+        flex-shrink: 0;
       }
-      .logo-text-group {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+      /* Ensure Navbar text is always single line */
       .logo-title {
         font-family: "Montserrat", sans-serif;
         font-weight: 900;
-        font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+        font-size: clamp(12px, 1.8vw, 22px);
         letter-spacing: 0.5px;
         color: #d50000;
-        line-height: 1.1;
         white-space: nowrap;
-      }
-      .logo-subtitle {
-        font-family: "Montserrat", sans-serif;
-        font-weight: 700;
-        font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-        color: var(--text-color);
-        letter-spacing: 1px;
-        line-height: 1;
-        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       nav#navbar {
@@ -249,10 +246,6 @@
         visibility: visible;
         transform: translateX(-50%) translateY(0);
       }
-      .dropdown-menu li {
-        width: 100%;
-        height: auto;
-      }
       .dropdown-menu li a {
         display: block;
         padding: 12px 20px;
@@ -286,7 +279,7 @@
       }
 
       /* =========================================
-           SOLID CURTAIN INTRO 
+           SOLID CURTAIN INTRO (No Overlaps, Centered Text)
            ========================================= */
       #intro-section {
         position: relative;
@@ -305,19 +298,19 @@
         flex-direction: row;
         gap: 20px;
         position: absolute;
-        z-index: 2;
+        z-index: 2; /* Behind text */
       }
       .img-wrapper {
-        width: clamp(100px, 15vw, 200px);
-        height: clamp(100px, 15vw, 200px);
+        width: clamp(80px, 12vw, 180px);
+        height: clamp(80px, 12vw, 180px);
         background: transparent;
         display: flex;
         justify-content: center;
         align-items: center;
         will-change: transform, opacity;
         transition:
-          transform 1s cubic-bezier(0.25, 1, 0.5, 1),
-          opacity 0.6s ease;
+          transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+          opacity 0.8s ease;
       }
       .img-wrapper img {
         width: 100%;
@@ -326,14 +319,18 @@
         pointer-events: none;
       }
 
+      /* NO OPACITY - Solid Logos */
       .scattered .img-1 {
-        transform: translate3d(-18vw, -18vh, 0) scale(0.9);
+        transform: translate3d(-25vw, -28vh, 0) scale(0.9);
+        opacity: 1;
       }
       .scattered .img-2 {
-        transform: translate3d(0vw, 20vh, 0) scale(0.9);
+        transform: translate3d(0vw, 32vh, 0) scale(0.9);
+        opacity: 1;
       }
       .scattered .img-3 {
-        transform: translate3d(18vw, -18vh, 0) scale(0.9);
+        transform: translate3d(25vw, -28vh, 0) scale(0.9);
+        opacity: 1;
       }
 
       .text-wrapper {
@@ -341,27 +338,31 @@
         z-index: 10;
         text-align: center;
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.8);
         will-change: transform, opacity;
         transition:
-          transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-          opacity 0.8s ease;
+          transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 1s ease;
         width: 95vw;
-        max-width: 1100px;
+        max-width: 1200px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        pointer-events: none;
       }
       .scattered .text-wrapper {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
       }
 
+      /* Guaranteed 1 line, responsive sizing */
       .intro-heading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: linear-gradient(to bottom, #d50000 0%, #aa0000 100%);
+        background: linear-gradient(
+          to bottom,
+          #ff4b4b 0%,
+          #d50000 50%,
+          #8a0000 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-family: "Bebas Neue", sans-serif;
@@ -370,27 +371,21 @@
         line-height: 1;
         width: 100%;
         filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
-      }
 
-      .intro-main {
-        font-size: clamp(50px, 8.5vw, 120px);
-        letter-spacing: 2px;
-      }
-
-      .intro-sub {
-        font-size: clamp(35px, 6vw, 85px);
-        letter-spacing: 3px;
-        margin-top: -5px;
+        font-size: clamp(20px, 4.8vw, 85px);
+        letter-spacing: 1.5px;
+        white-space: nowrap;
       }
 
       .intro-tagline {
         font-family: "Inter", sans-serif;
-        font-size: clamp(14px, 2vw, 24px);
-        font-weight: 500;
+        font-size: clamp(12px, 1.8vw, 24px);
+        font-weight: 600;
         color: #d50000;
         letter-spacing: 0.5px;
-        margin-top: 15px;
+        margin-top: 10px;
         text-align: center;
+        white-space: nowrap;
       }
 
       body.scrolled #intro-section .img-wrapper,
@@ -400,7 +395,7 @@
       }
 
       /* =========================================
-           MAIN VIEW: FULL PAGE AUTO-SLIDER 
+           MAIN VIEW: INSTAGRAM-STYLE NATIVE SLIDER 
            ========================================= */
       #slider-section {
         position: relative;
@@ -409,40 +404,67 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
-        padding-top: 65px;
         background-color: var(--bg-color);
-        cursor: grab; /* Indicates swipeability */
+        padding-top: 70px;
       }
-      #slider-section:active {
-        cursor: grabbing;
+
+      .slider-track {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .slider-track::-webkit-scrollbar {
+        display: none;
       }
 
       .slide {
-        position: absolute;
-        top: 0;
-        left: 0;
+        flex: 0 0 100%;
         width: 100%;
-        height: 100%;
+        min-height: calc(100vh - 70px);
+        scroll-snap-align: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 20px 8vw;
+        padding: 20px 10vw 80px 10vw;
         text-align: center;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(20px);
-        transition: all 0.4s ease-out;
-        pointer-events: none;
-        overflow-y: auto;
       }
-      .slide.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        pointer-events: auto;
-        z-index: 10;
+
+      /* Laptop slider buttons */
+      .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.85);
+        border: 2px solid #d50000;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        color: #d50000;
+        cursor: pointer;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s ease;
+      }
+      .slider-btn:hover {
+        background: #d50000;
+        color: #ffffff;
+        transform: translateY(-50%) scale(1.1);
+      }
+      .slider-btn.prev {
+        left: 25px;
+      }
+      .slider-btn.next {
+        right: 25px;
       }
 
       .slide h2 {
@@ -519,7 +541,7 @@
       }
 
       /* =========================================
-           DEDICATED VIEWS (Machines, Equipments, Products)
+           DEDICATED VIEWS
            ========================================= */
       .dedicated-section {
         display: flex;
@@ -551,7 +573,6 @@
         cursor: pointer;
         width: 100%;
       }
-
       .item-text-content {
         display: flex;
         flex-direction: column;
@@ -659,13 +680,12 @@
           opacity: 1;
         }
       }
-
       .single-img {
         opacity: 1 !important;
       }
 
       /* =========================================
-           DUAL MARQUEES (Foundries & Customers)
+           DUAL MARQUEES (No Opacity / No Grayscale)
            ========================================= */
       .marquee-section {
         padding: 40px 0;
@@ -697,19 +717,20 @@
         animation: scrollMarquee 20s linear infinite;
         align-items: center;
       }
+
+      /* NORMAL, SOLID MARQUEE IMAGES */
       .marquee-content img {
         height: clamp(35px, 6vw, 50px);
         margin: 0 clamp(25px, 4vw, 45px);
         object-fit: contain;
-        filter: grayscale(100%) contrast(1.2);
-        opacity: 0.65;
         transition: all 0.2s ease;
+        opacity: 1;
+        filter: none;
       }
       .marquee-content img:hover {
-        filter: grayscale(0%);
-        opacity: 1;
         transform: scale(1.08);
       }
+
       @keyframes scrollMarquee {
         0% {
           transform: translateX(0);
@@ -776,7 +797,6 @@
            PERFECT MOBILE UX (PHONES & TABLETS)
            ========================================= */
       @media (max-width: 950px) {
-        /* 1. Mobile Header: ONLY ☰ + stacked Logo/Name */
         header {
           display: block;
           padding: 0;
@@ -785,70 +805,48 @@
           overflow: visible;
           position: fixed;
         }
-
         .header-inner {
           display: flex;
           align-items: center;
           width: 100%;
           min-height: 70px;
-          padding: 10px 5vw;
+          padding: 10px 4vw;
           background-color: var(--nav-bg);
-          gap: 16px;
+          gap: 10px;
           z-index: 9005;
           position: relative;
         }
-
-        /* Hamburger stays completely on the left */
         .menu-icon {
           display: block;
-          font-size: 32px;
+          font-size: 26px;
           color: var(--text-color);
           cursor: pointer;
           user-select: none;
           flex: 0 0 auto;
           line-height: 1;
-          width: 32px;
+          width: 28px;
           text-align: center;
         }
 
-        /* Logo + Text vertically stacked */
         .logo-container {
-          display: flex;
-          flex-direction: row; /* KEEP IMAGE ON LEFT ON MOBILE */
-          align-items: center;
-          justify-content: flex-start;
           gap: 8px;
-          flex: 0 0 auto;
+          width: 100%;
+          overflow: hidden;
         }
-
         .logo-container img {
-          height: 35px;
-          width: auto;
-          display: block;
+          height: 30px;
         }
-
-        .logo-text-group {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
         .logo-title {
-          font-size: 0.95rem;
-          line-height: 1;
-        }
-        .logo-subtitle {
-          font-size: 0.65rem;
-          margin-top: 1px;
+          font-size: clamp(10px, 3.8vw, 15px);
         }
 
-        /* 2. Mobile Drawer */
+        /* Mobile Drawer */
         nav#navbar {
           position: absolute;
           top: 100%;
           left: 0;
-          width: 50vw;
-          max-width: 360px;
+          width: 60vw;
+          max-width: 320px;
           min-width: 250px;
           height: auto;
           background-color: var(--nav-bg);
@@ -868,7 +866,6 @@
           display: block;
           pointer-events: none;
         }
-
         nav#navbar.open {
           max-height: calc(100svh - 70px);
           overflow-y: auto;
@@ -876,7 +873,6 @@
           transform: translateY(0);
           pointer-events: auto;
         }
-
         nav#navbar ul.nav-links {
           display: flex;
           flex-direction: column;
@@ -884,7 +880,6 @@
           padding: 2px 0;
           margin: 0;
         }
-
         nav#navbar ul.nav-links li {
           width: 100%;
           border-bottom: 1px solid var(--border-color);
@@ -893,14 +888,12 @@
           flex-direction: column;
           align-items: flex-start;
         }
-
         nav#navbar ul.nav-links li:last-child {
           border-bottom: none;
         }
-
         nav#navbar ul.nav-links li a {
-          padding: 9px 16px;
-          font-size: 0.78rem;
+          padding: 12px 16px;
+          font-size: 0.8rem;
           line-height: 1.15;
           width: 100%;
           display: block;
@@ -924,25 +917,22 @@
           padding: 0;
           min-width: 0;
         }
-
         .dropdown-menu li {
           width: 100%;
           border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-
         .dropdown-menu li:last-child {
           border-bottom: none;
         }
-
         .dropdown-menu li a {
-          padding: 7px 16px 7px 30px;
-          font-size: 0.68rem;
-          line-height: 1.1;
+          padding: 10px 16px 10px 30px;
+          font-size: 0.75rem;
+          line-height: 1.2;
           color: var(--text-color);
-          opacity: 0.82;
+          opacity: 0.85;
         }
 
-        /* 3. Intro Mobile Adjustments */
+        /* Intro Mobile Adjustments */
         #intro-section {
           width: 100%;
           min-height: 100svh;
@@ -952,197 +942,107 @@
         }
 
         .image-container {
-          position: absolute;
-          inset: 0;
           width: 100%;
           height: 100%;
-          transform: none;
+          top: 0;
+          left: 0;
           display: block;
-          pointer-events: none;
-          overflow: hidden;
         }
 
         .img-wrapper {
           position: absolute;
-          left: 50%;
-          width: clamp(72px, 20vw, 96px);
-          height: clamp(72px, 20vw, 96px);
+          width: clamp(50px, 12vw, 90px);
+          height: clamp(50px, 12vw, 90px);
           margin: 0;
           flex-shrink: 0;
           transform-origin: center center;
-          will-change: transform, left, top;
+          /* Adding top and left transition for perfectly smooth scattering on mobile */
           transition:
-            left 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-            top 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-            transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 0.8s ease;
+            transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+            opacity 0.8s ease,
+            top 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+            left 1.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .img-wrapper.img-1 {
+        /* INITIAL STATE ON MOBILE (Stacked vertically in the middle) */
+        .img-1 {
           left: 50%;
-          top: 39%;
-          transform: translate(-50%, -50%) scale(0.9);
+          top: 35%;
+          transform: translate(-50%, -50%);
         }
-        .img-wrapper.img-2 {
+        .img-2 {
           left: 50%;
           top: 50%;
-          transform: translate(-50%, -50%) scale(0.9);
+          transform: translate(-50%, -50%);
         }
-        .img-wrapper.img-3 {
+        .img-3 {
           left: 50%;
-          top: 61%;
-          transform: translate(-50%, -50%) scale(0.9);
+          top: 65%;
+          transform: translate(-50%, -50%);
         }
 
+        /* SCATTERED STATE ON MOBILE (Three different directions, no overlap with center text) */
         .scattered .img-1 {
-          left: 27%;
-          top: 20%;
+          left: 15%;
+          top: 15%;
           transform: translate(-50%, -50%) scale(0.9);
+          opacity: 1;
         }
         .scattered .img-2 {
           left: 50%;
-          top: 78%;
+          top: 85%;
           transform: translate(-50%, -50%) scale(0.9);
+          opacity: 1;
         }
         .scattered .img-3 {
-          left: 73%;
-          top: 20%;
+          left: 85%;
+          top: 15%;
           transform: translate(-50%, -50%) scale(0.9);
+          opacity: 1;
         }
 
-        .intro-main {
-          font-size: clamp(55px, 11vw, 90px);
-          letter-spacing: 1.5px;
-        }
-        .intro-sub {
-          font-size: clamp(35px, 7vw, 60px);
-          letter-spacing: 2px;
+        .intro-heading {
+          font-size: clamp(14px, 6.2vw, 40px);
+          letter-spacing: 0.5px;
         }
         .intro-tagline {
-          font-size: clamp(12px, 3.5vw, 16px);
-          padding: 0 10px;
-          margin-top: 10px;
+          font-size: clamp(10px, 2.8vw, 15px);
+          padding: 0;
+          margin-top: 8px;
         }
 
-        @media (max-width: 430px) {
-          .img-wrapper {
-            width: clamp(68px, 20vw, 88px);
-            height: clamp(68px, 20vw, 88px);
-          }
-          .img-wrapper.img-1 {
-            top: 38%;
-          }
-          .img-wrapper.img-2 {
-            top: 50%;
-          }
-          .img-wrapper.img-3 {
-            top: 62%;
-          }
-          .scattered .img-1 {
-            left: 27%;
-            top: 20%;
-            transform: translate(-50%, -50%) scale(0.9);
-          }
-          .scattered .img-2 {
-            left: 50%;
-            top: 80%;
-            transform: translate(-50%, -50%) scale(0.9);
-          }
-          .scattered .img-3 {
-            left: 73%;
-            top: 20%;
-            transform: translate(-50%, -50%) scale(0.9);
-          }
+        /* Hide desktop slider buttons, phones will use native swipe */
+        .slider-btn {
+          display: none;
         }
 
-        /* 4. Mobile Slider: compact, centered */
         #slider-section {
           width: 100%;
           min-height: 0;
           height: auto;
-          padding: 105px 5vw 55px 5vw;
+          padding: 105px 0 55px 0;
           display: block;
           overflow: visible;
         }
 
-        .slide {
-          position: absolute;
-          top: auto;
-          left: 0;
-          width: 100%;
-          height: auto;
-          min-height: 0;
-          display: none;
-          opacity: 0;
-          visibility: hidden;
-          transform: none;
-          padding: 0;
-          margin: 0;
-          text-align: center;
-          overflow: visible;
-        }
-
-        .slide.active {
-          position: relative;
-          display: flex;
-          width: 100%;
-          height: auto;
-          min-height: 0;
-          opacity: 1;
-          visibility: visible;
-          transform: none;
-          align-items: center;
-          justify-content: flex-start;
-        }
-
         .slide h2 {
-          width: 100%;
           font-size: clamp(2.6rem, 12vw, 3.6rem);
-          line-height: 0.95;
           margin: 0 0 18px 0;
-          letter-spacing: 1.5px;
-          text-align: center;
         }
-
         .slide p {
-          width: 100%;
-          max-width: 680px;
           font-size: clamp(1rem, 4.2vw, 1.18rem);
-          line-height: 1.55;
           margin: 0 auto 14px auto;
-          text-align: center;
         }
-
         .slide ul {
-          width: 100%;
-          max-width: 680px;
-          margin: 8px auto 0 auto;
-          padding: 0;
           font-size: clamp(0.98rem, 4vw, 1.1rem);
-          line-height: 1.55;
-          text-align: left;
         }
-
-        .slide li {
-          margin-bottom: 9px;
-        }
-
         .slide ul[style*="max-width: 580px"] {
-          width: 100%;
           max-width: 580px !important;
           padding: 20px 18px !important;
-          margin-left: auto;
-          margin-right: auto;
-          text-align: left;
         }
         .slide ul[style*="columns: 2"] {
           columns: 1 !important;
           column-count: 1 !important;
-        }
-
-        .iso-cert-container {
-          width: min(100%, 280px);
-          margin: 8px auto 0 auto;
         }
 
         .dots-container {
@@ -1155,65 +1055,42 @@
           margin: 28px auto 0 auto;
           gap: 11px;
         }
-
         .dot {
           width: 10px;
           height: 10px;
         }
 
-        /* 5. Tighten Dedicated Sections */
+        /* Tighten Dedicated Sections */
         .dedicated-section {
           padding: 105px 5vw 55px 5vw;
           min-height: auto;
         }
         .section-header {
-          width: 100%;
           font-size: clamp(2.8rem, 12vw, 3.8rem);
-          line-height: 0.95;
-          margin-bottom: 28px;
           text-align: center;
+          margin-bottom: 28px;
         }
         .interactive-list {
-          width: 100%;
           gap: 34px;
         }
         .interactive-item {
-          width: 100%;
           gap: 14px;
           flex-direction: column;
           align-items: center;
           text-align: center;
         }
-        .item-text-content {
-          width: 100%;
-          align-items: center;
-        }
         .interactive-name {
-          width: 100%;
           font-size: clamp(2.35rem, 10vw, 3.6rem);
-          line-height: 0.98;
-          text-align: center;
         }
         .item-desc {
-          width: 100%;
           max-width: 650px;
           font-size: clamp(0.98rem, 4vw, 1.1rem);
-          line-height: 1.5;
-          text-align: center;
         }
         .mini-slideshow {
-          width: 100%;
           max-width: 430px;
           height: min(55vw, 220px);
           min-height: 170px;
-          transform-origin: center;
           margin-top: 4px;
-        }
-        .marquee-title {
-          font-size: 1.6rem;
-        }
-        .marquee-section {
-          padding: 30px 0;
         }
         footer {
           padding: 60px 6vw;
@@ -1224,29 +1101,22 @@
   </head>
   <body>
     <!-- Theme Toggle -->
-    <button
-      id="theme-toggle"
-      title="Toggle Dark/Light Mode"
-      aria-label="Toggle Dark/Light Mode"
-    ></button>
+    <button id="theme-toggle" title="Toggle Dark/Light Mode"></button>
 
     <!-- HEADER / NAVBAR -->
     <header id="main-header">
       <div class="header-inner">
-        <!-- Hamburger precisely on LHS -->
+        <!-- Hamburger -->
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
 
-        <!-- Logo & Text Block -->
+        <!-- Logo & ONE LINE Text -->
         <div class="logo-container" onclick="navigateTo('main-view', null, 0)">
           <img
             src="1.png"
             alt="Company Logo"
             onerror="this.style.display = 'none'"
           />
-          <div class="logo-text-group">
-            <span class="logo-title">MARVELOUS PRECISION</span>
-            <span class="logo-subtitle">PVT. LTD.</span>
-          </div>
+          <span class="logo-title">MARVELOUS PRECISION PVT. LTD.</span>
         </div>
       </div>
 
@@ -1318,155 +1188,170 @@
          VIEW 1: MAIN HOME VIEW
          ======================================================= -->
     <div id="main-view" class="page-view active">
+      <!-- PERFECTLY CENTERED INTRO, NO OVERLAPS -->
       <section id="intro-section">
         <div class="image-container" id="img-container">
+          <!-- Images kept strictly within the screen bounds via CSS -->
           <div class="img-wrapper img-1"><img src="1.png" alt="Image 1" /></div>
           <div class="img-wrapper img-2"><img src="2.png" alt="Image 2" /></div>
           <div class="img-wrapper img-3"><img src="3.png" alt="Image 3" /></div>
         </div>
 
-        <!-- Clean HTML Text Block (Guaranteed NO OVERLAYS!) -->
+        <!-- Clean HTML Text Block (1 Line Guarantee) -->
         <div class="text-wrapper" id="intro-text">
-          <h1 class="intro-heading">
-            <span class="intro-main">MARVELOUS PRECISION</span>
-            <span class="intro-sub">PVT. LTD.</span>
-          </h1>
+          <h1 class="intro-heading">MARVELOUS PRECISION PVT. LTD.</h1>
           <p class="intro-tagline">
             Manufacturer of Precision Machined Components
           </p>
         </div>
       </section>
 
+      <!-- INSTAGRAM STYLE SLIDER -->
       <section id="slider-section">
-        <div class="slide active">
-          <h2>About Us</h2>
-          <p>
-            We specialize in delivering precision machined components that meet
-            the highest standards of quality and reliability. Located in Gokul
-            Shirgaon MIDC Kolhapur, Maharashtra, our machine shop is equipped
-            with advanced CNC, VMC, and HMC machines, along with
-            state-of-the-art measuring instruments including a Digital Height
-            Gauge and CMM.
-          </p>
-          <p>
-            With a strong commitment to quality, innovation, and customer
-            satisfaction, we provide machining solutions for industries such as
-            automotive, hydraulics, power transmission, agriculture machinery
-            and custom OEMs.
-          </p>
-          <p>
-            <strong style="color: #d50000; font-style: italic"
-              >Quintessence of our business is ‘Just in Time’ delivery!</strong
-            >
-          </p>
-        </div>
+        <!-- Desktop Left/Right Buttons -->
+        <button class="slider-btn prev" onclick="prevSlide()">❮</button>
+        <button class="slider-btn next" onclick="nextSlide()">❯</button>
 
-        <div class="slide">
-          <h2>Vision & Mission</h2>
-          <p>
-            <strong>Our Vision:</strong> To achieve global recognition by
-            delivering precision-engineered components with uncompromised
-            quality.
-          </p>
-          <p>
-            <strong>Our Mission:</strong> To create value for our clients with
-            precision, timely delivery, and cost-effective solutions, powered by
-            a motivated workforce.
-          </p>
-          <p style="margin-top: 15px"><strong>Core Values:</strong></p>
-          <ul>
-            <li>• Integrity and Ethics through Transparency.</li>
-            <li>• Impartial Counsel and Validation.</li>
-            <li>• Respect for all Individuals across the echelon.</li>
-            <li>
-              • Social and Environmental Responsibility (SCR) through
-              eco-friendly practices.
-            </li>
-          </ul>
-        </div>
+        <div class="slider-track" id="slider-track">
+          <!-- Slide 0 -->
+          <div class="slide">
+            <h2>About Us</h2>
+            <p>
+              We specialize in delivering precision machined components that
+              meet the highest standards of quality and reliability. Located in
+              Gokul Shirgaon MIDC Kolhapur, Maharashtra, our machine shop is
+              equipped with advanced CNC, VMC, and HMC machines, along with
+              state-of-the-art measuring instruments including a Digital Height
+              Gauge and CMM.
+            </p>
+            <p>
+              With a strong commitment to quality, innovation, and customer
+              satisfaction, we provide machining solutions for industries such
+              as automotive, hydraulics, power transmission, agriculture
+              machinery and custom OEMs.
+            </p>
+            <p>
+              <strong style="color: #d50000; font-style: italic"
+                >Quintessence of our business is ‘Just in Time’
+                delivery!</strong
+              >
+            </p>
+          </div>
 
-        <div class="slide">
-          <h2>Registration Details</h2>
-          <ul
-            style="
-              max-width: 580px;
-              background: var(--card-bg);
-              padding: 25px 30px;
-              border-radius: 12px;
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-              border: 1px solid var(--border-color);
-            "
-          >
-            <li><strong>CIN:</strong> U29300PN2010PTC135369</li>
-            <li><strong>GST NUMBER:</strong> 27AAGCM3307B1Z7</li>
-            <li><strong>ROC:</strong> ROC – PUNE, MAHARASHTRA</li>
-            <li><strong>CLASS OF COMPANY:</strong> PRIVATE</li>
-            <li><strong>INCORPORATION:</strong> 20 JANUARY 2010</li>
-            <li><strong>EXPORTER CODE (IEC):</strong> 3109020611</li>
-            <li><strong>CERC NUMBER:</strong> AAGCM3307BEM001</li>
-          </ul>
-        </div>
+          <!-- Slide 1 -->
+          <div class="slide">
+            <h2>Vision & Mission</h2>
+            <p>
+              <strong>Our Vision:</strong> To achieve global recognition by
+              delivering precision-engineered components with uncompromised
+              quality.
+            </p>
+            <p>
+              <strong>Our Mission:</strong> To create value for our clients with
+              precision, timely delivery, and cost-effective solutions, powered
+              by a motivated workforce.
+            </p>
+            <p style="margin-top: 15px"><strong>Core Values:</strong></p>
+            <ul>
+              <li>• Integrity and Ethics through Transparency.</li>
+              <li>• Impartial Counsel and Validation.</li>
+              <li>• Respect for all Individuals across the echelon.</li>
+              <li>
+                • Social and Environmental Responsibility (SCR) through
+                eco-friendly practices.
+              </li>
+            </ul>
+          </div>
 
-        <div class="slide">
-          <h2>Infrastructure</h2>
-          <p>
-            Our eco-friendly manufacturing facility is located in the industrial
-            suburb of Kolhapur, spread over a 6,000 sq. ft. plot, with a 2,800
-            sq. ft. built-up area in the first phase. The plant is designed to
-            support sustainable operations and future expansion.
-          </p>
-          <ul>
-            <li>
-              • <strong>Eco-Friendly Machines</strong> ensuring reduced
-              environmental impact.
-            </li>
-            <li>
-              • <strong>Indian Standard Electrical Distribution System</strong>,
-              equivalent to CE Standards, providing reliability and safety.
-            </li>
-            <li>
-              • <strong>Advanced Global Machines</strong> from proven
-              manufacturers such as Askar, Cosmos, BFW, and Goodway, delivering
-              precision and consistency in every component.
-            </li>
-          </ul>
-        </div>
-
-        <div class="slide">
-          <h2>Quality</h2>
-          <p>
-            We are proudly <strong>ISO 9001:2015</strong> certified for the
-            Manufacture & Supply of Precision Machine Components.
-          </p>
-          <p>
-            We deploy strict quality controls using accurate and
-            state-of-the-art testing apparatus. Navigate to "Inspection
-            Equipments" from the Quality menu to explore our CMM, Height Gauges,
-            and Precision Instruments.
-          </p>
-          <button
-            class="back-btn"
-            style="margin-top: 20px"
-            onclick="navigateTo('equipments-view', null)"
-          >
-            View Inspection Equipments
-          </button>
-        </div>
-
-        <div class="slide">
-          <h2>ISO 9001:2015 Certification</h2>
-          <p>
-            Certified by ICL for international quality management and
-            operational excellence.
-          </p>
-          <div class="iso-cert-container">
-            <img
-              src="iso.png"
-              alt="ISO 9001:2015 Certificate"
-              onerror="
-                this.src = 'https://via.placeholder.com/600x800?text=iso.png'
+          <!-- Slide 2 -->
+          <div class="slide">
+            <h2>Registration Details</h2>
+            <ul
+              style="
+                max-width: 580px;
+                background: var(--card-bg);
+                padding: 25px 30px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+                border: 1px solid var(--border-color);
               "
-            />
+            >
+              <li><strong>CIN:</strong> U29300PN2010PTC135369</li>
+              <li><strong>GST NUMBER:</strong> 27AAGCM3307B1Z7</li>
+              <li><strong>ROC:</strong> ROC – PUNE, MAHARASHTRA</li>
+              <li><strong>CLASS OF COMPANY:</strong> PRIVATE</li>
+              <li><strong>INCORPORATION:</strong> 20 JANUARY 2010</li>
+              <li><strong>EXPORTER CODE (IEC):</strong> 3109020611</li>
+              <li><strong>CERC NUMBER:</strong> AAGCM3307BEM001</li>
+            </ul>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="slide">
+            <h2>Infrastructure</h2>
+            <p>
+              Our eco-friendly manufacturing facility is located in the
+              industrial suburb of Kolhapur, spread over a 6,000 sq. ft. plot,
+              with a 2,800 sq. ft. built-up area in the first phase. The plant
+              is designed to support sustainable operations and future
+              expansion.
+            </p>
+            <ul>
+              <li>
+                • <strong>Eco-Friendly Machines</strong> ensuring reduced
+                environmental impact.
+              </li>
+              <li>
+                •
+                <strong>Indian Standard Electrical Distribution System</strong>,
+                equivalent to CE Standards, providing reliability and safety.
+              </li>
+              <li>
+                • <strong>Advanced Global Machines</strong> from proven
+                manufacturers such as Askar, Cosmos, BFW, and Goodway,
+                delivering precision and consistency in every component.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="slide">
+            <h2>Quality</h2>
+            <p>
+              We are proudly <strong>ISO 9001:2015</strong> certified for the
+              Manufacture & Supply of Precision Machine Components.
+            </p>
+            <p>
+              We deploy strict quality controls using accurate and
+              state-of-the-art testing apparatus. Navigate to "Inspection
+              Equipments" from the Quality menu to explore our CMM, Height
+              Gauges, and Precision Instruments.
+            </p>
+            <button
+              class="back-btn"
+              style="margin-top: 20px"
+              onclick="navigateTo('equipments-view', null)"
+            >
+              View Inspection Equipments
+            </button>
+          </div>
+
+          <!-- Slide 5 -->
+          <div class="slide">
+            <h2>ISO 9001:2015 Certification</h2>
+            <p>
+              Certified by ICL for international quality management and
+              operational excellence.
+            </p>
+            <div class="iso-cert-container">
+              <img
+                src="iso.png"
+                alt="ISO 9001:2015 Certificate"
+                onerror="
+                  this.src = 'https://via.placeholder.com/600x800?text=iso.png'
+                "
+              />
+            </div>
           </div>
         </div>
 
@@ -1665,7 +1550,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">VMC MACHINES</span>
@@ -1701,7 +1585,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">HMC MACHINES</span>
@@ -1773,7 +1656,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">ACCURATE CMM SPECTRA</span>
@@ -1793,7 +1675,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">INSIZE VERNIER CALIPER</span>
@@ -1813,7 +1694,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">INSIZE DEPTH VERNIER CALIPER</span>
@@ -1833,7 +1713,6 @@
               />
             </div>
           </div>
-
           <div class="interactive-item">
             <div class="item-text-content">
               <span class="interactive-name">BORE DIAL GAUGE</span>
@@ -2081,89 +1960,56 @@
         }, 30);
       }
 
-      // --- Auto-Slider & Swipe Logic ---
-      let currentSlide = 0;
-      const slides = document.querySelectorAll(".slide");
+      // --- Instagram-Style Native Slider Logic ---
+      const sliderTrack = document.getElementById("slider-track");
       const dots = document.querySelectorAll(".dot");
+      const slides = document.querySelectorAll(".slide");
       let slideInterval;
+      let currentSlide = 0;
 
-      function showSlide(index) {
-        slides.forEach((slide, i) => {
-          slide.classList.remove("active");
-          if (dots[i]) dots[i].classList.remove("active");
+      // Update dots dynamically based on scroll position
+      function updateDots() {
+        if (!sliderTrack) return;
+        const slideWidth = sliderTrack.clientWidth;
+        currentSlide = Math.round(sliderTrack.scrollLeft / slideWidth);
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentSlide);
         });
-        slides[index].classList.add("active");
-        if (dots[index]) dots[index].classList.add("active");
-        currentSlide = index;
+      }
+
+      if (sliderTrack) {
+        sliderTrack.addEventListener(
+          "scroll",
+          () => {
+            updateDots();
+            resetInterval();
+          },
+          { passive: true },
+        );
+      }
+
+      function goToSlide(index) {
+        if (!sliderTrack) return;
+        const slideWidth = sliderTrack.clientWidth;
+        sliderTrack.scrollTo({ left: slideWidth * index, behavior: "smooth" });
+        resetInterval();
       }
 
       function nextSlide() {
         let nextIndex = (currentSlide + 1) % slides.length;
-        showSlide(nextIndex);
+        goToSlide(nextIndex);
       }
 
       function prevSlide() {
         let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(prevIndex);
+        goToSlide(prevIndex);
       }
 
-      function goToSlide(index) {
-        showSlide(index);
+      function resetInterval() {
         clearInterval(slideInterval);
-        slideInterval = setInterval(nextSlide, 5000);
+        slideInterval = setInterval(nextSlide, 6000);
       }
-
-      // --- Touch/Swipe Event Listeners for Slider ---
-      const sliderSection = document.getElementById("slider-section");
-      let startX = 0;
-      let endX = 0;
-
-      function handleTouchStart(e) {
-        startX = e.changedTouches[0].screenX;
-      }
-
-      function handleTouchMove(e) {
-        endX = e.changedTouches[0].screenX;
-      }
-
-      function handleTouchEnd() {
-        handleSwipe();
-      }
-
-      function handleMouseDown(e) {
-        startX = e.screenX;
-      }
-
-      function handleMouseUp(e) {
-        endX = e.screenX;
-        handleSwipe();
-      }
-
-      function handleSwipe() {
-        if (startX - endX > 50) {
-          // Swiped left, go to next slide
-          goToSlide((currentSlide + 1) % slides.length);
-        } else if (endX - startX > 50) {
-          // Swiped right, go to previous slide
-          goToSlide((currentSlide - 1 + slides.length) % slides.length);
-        }
-      }
-
-      sliderSection.addEventListener("touchstart", handleTouchStart, {
-        passive: true,
-      });
-      sliderSection.addEventListener("touchmove", handleTouchMove, {
-        passive: true,
-      });
-      sliderSection.addEventListener("touchend", handleTouchEnd, {
-        passive: true,
-      });
-      sliderSection.addEventListener("mousedown", handleMouseDown, {
-        passive: true,
-      });
-      sliderSection.addEventListener("mouseup", handleMouseUp, {
-        passive: true,
-      });
 
       document.addEventListener("DOMContentLoaded", () => {
         const themeToggle = document.getElementById("theme-toggle");
@@ -2195,7 +2041,7 @@
           { passive: true },
         );
 
-        slideInterval = setInterval(nextSlide, 5000);
+        resetInterval();
 
         const interactiveItems = document.querySelectorAll(".interactive-item");
         interactiveItems.forEach((item) => {
