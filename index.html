@@ -442,6 +442,42 @@
         align-items: center;
         padding: 20px 10vw 80px 10vw;
         text-align: center;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      /* Slide background images and dark layering (b1.png to b6.png) */
+      .slide:nth-child(1) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b1.png");
+      }
+      .slide:nth-child(2) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b2.png");
+      }
+      .slide:nth-child(3) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b3.png");
+      }
+      .slide:nth-child(4) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b4.png");
+      }
+      .slide:nth-child(5) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b5.png");
+      }
+      .slide:nth-child(6) {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+          url("b6.png");
       }
 
       /* Laptop slider buttons */
@@ -479,10 +515,11 @@
       .slide h2 {
         font-family: "Bebas Neue", sans-serif;
         font-size: clamp(3.5rem, 8vw, 5rem);
-        color: #d50000;
+        color: #ff4b4b;
         letter-spacing: 2px;
         margin-bottom: 20px;
         line-height: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
       .slide p {
         font-family: "Inter", sans-serif;
@@ -491,7 +528,8 @@
         max-width: 1000px;
         font-weight: 500;
         margin-bottom: 12px;
-        color: var(--text-color);
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
       }
       .slide ul {
         text-align: left;
@@ -500,14 +538,15 @@
         font-family: "Inter", sans-serif;
         font-size: clamp(1.05rem, 2vw, 1.15rem);
         line-height: 1.7;
-        color: var(--text-color);
+        color: #ffffff;
         list-style: none;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
       }
       .slide li {
         margin-bottom: 8px;
       }
       .slide strong {
-        color: #d50000;
+        color: #ff6b6b;
       }
 
       .iso-cert-container {
@@ -516,8 +555,8 @@
         margin: 15px auto 0 auto;
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        border: 4px solid var(--card-bg);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        border: 4px solid rgba(255, 255, 255, 0.2);
       }
       .iso-cert-container img {
         width: 100%;
@@ -1253,7 +1292,7 @@
               machinery and custom OEMs.
             </p>
             <p>
-              <strong style="color: #d50000; font-style: italic"
+              <strong style="color: #ff6b6b; font-style: italic"
                 >Quintessence of our business is ‘Just in Time’
                 delivery!</strong
               >
@@ -1291,11 +1330,11 @@
             <ul
               style="
                 max-width: 580px;
-                background: var(--card-bg);
+                background: rgba(32, 32, 32, 0.85);
                 padding: 25px 30px;
                 border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-                border: 1px solid var(--border-color);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.15);
               "
             >
               <li><strong>CIN:</strong> U29300PN2010PTC135369</li>
