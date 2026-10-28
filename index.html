@@ -17,15 +17,14 @@
         padding: 0;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
-        -webkit-touch-callout: none; /* Disable iOS callout */
-        -webkit-user-select: none; /* Safari */
-        -khtml-user-select: none; /* Konqueror HTML */
-        -moz-user-select: none; /* Old Firefox */
-        -ms-user-select: none; /* IE/Edge */
-        user-select: none; /* Standard */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
 
-      /* Lock all images from being dragged or saved */
       img {
         -webkit-user-drag: none;
         -khtml-user-drag: none;
@@ -61,7 +60,7 @@
           background-color 0.3s ease,
           color 0.3s ease;
         scroll-behavior: smooth;
-        cursor: default; /* Forces normal cursor instead of text caret */
+        cursor: default;
       }
 
       /* VIEW SWITCHER LOGIC */
@@ -107,8 +106,6 @@
       #theme-toggle:hover {
         transform: scale(1.1);
       }
-
-      /* Mobile-only minimal theme control */
       @media (max-width: 768px) {
         #theme-toggle {
           width: 20px;
@@ -126,9 +123,7 @@
         }
       }
 
-      /* =========================================
-           NAVIGATION BAR (DESKTOP DEFAULT)
-           ========================================= */
+      /* NAVIGATION BAR */
       header {
         position: fixed;
         top: 0;
@@ -171,7 +166,6 @@
         object-fit: contain;
         flex-shrink: 0;
       }
-      /* Ensure Navbar text is always single line */
       .logo-title {
         font-family: "Montserrat", sans-serif;
         font-weight: 900;
@@ -181,12 +175,9 @@
         white-space: nowrap;
         text-overflow: ellipsis;
       }
-
-      /* Desktop version of logo title text */
       .logo-title-desktop {
         display: inline;
       }
-      /* Mobile version of logo title text (hidden by default on desktop) */
       .logo-title-mobile {
         display: none;
       }
@@ -288,8 +279,8 @@
       }
 
       /* =========================================
-           SOLID CURTAIN INTRO (No Overlaps, Centered Text)
-           ========================================= */
+         INDUSTRY-LEVEL EQUILATERAL TRIANGLE INTRO
+         ========================================= */
       #intro-section {
         position: relative;
         width: 100%;
@@ -300,46 +291,82 @@
         align-items: center;
         overflow: hidden;
         z-index: 20;
+        perspective: 1200px;
       }
 
       .image-container {
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
         position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         z-index: 2; /* Behind text */
+        pointer-events: none;
       }
+
       .img-wrapper {
-        width: clamp(80px, 12vw, 180px);
-        height: clamp(80px, 12vw, 180px);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: clamp(85px, 11vw, 165px);
+        height: clamp(85px, 11vw, 165px);
         background: transparent;
         display: flex;
         justify-content: center;
         align-items: center;
-        will-change: transform, opacity;
+        will-change: transform, opacity, filter;
+
+        /* Initial State: Center-locked, 3D tilted, blurred, scaled down */
+        transform: translate3d(-50%, -50%, -300px) scale(0.15) rotateX(35deg)
+          rotateZ(-25deg);
+        opacity: 0;
+        filter: blur(18px);
         transition:
-          transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
-          opacity 0.8s ease;
+          transform 1.7s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 1.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
+
+      /* Staggered Industry Timing: Top apex leads, bottom base follows */
+      .img-2 {
+        transition-delay: 0.05s;
+      }
+      .img-1 {
+        transition-delay: 0.18s;
+      }
+      .img-3 {
+        transition-delay: 0.26s;
+      }
+
       .img-wrapper img {
         width: 100%;
         height: 100%;
         object-fit: contain;
         pointer-events: none;
+        filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.14));
       }
 
-      /* NO OPACITY - Solid Logos */
-      .scattered .img-1 {
-        transform: translate3d(-25vw, -28vh, 0) scale(0.9);
-        opacity: 1;
-      }
+      /* EQUILATERAL TRIANGLE FORMATION:
+         2.png = Top Apex (Exact horizontal center)
+         1.png = Bottom Left Vertex
+         3.png = Bottom Right Vertex */
       .scattered .img-2 {
-        transform: translate3d(0vw, 32vh, 0) scale(0.9);
+        transform: translate3d(-50%, calc(-50% - 26vh), 0) scale(1)
+          rotateX(0deg) rotateZ(0deg);
         opacity: 1;
+        filter: blur(0px);
+      }
+      .scattered .img-1 {
+        transform: translate3d(calc(-50% - 20vw), calc(-50% + 22vh), 0) scale(1)
+          rotateX(0deg) rotateZ(0deg);
+        opacity: 1;
+        filter: blur(0px);
       }
       .scattered .img-3 {
-        transform: translate3d(25vw, -28vh, 0) scale(0.9);
+        transform: translate3d(calc(-50% + 20vw), calc(-50% + 22vh), 0) scale(1)
+          rotateX(0deg) rotateZ(0deg);
         opacity: 1;
+        filter: blur(0px);
       }
 
       .text-wrapper {
@@ -347,11 +374,13 @@
         z-index: 10;
         text-align: center;
         opacity: 0;
-        transform: scale(0.8);
-        will-change: transform, opacity;
+        transform: translate3d(0, 15px, 0) scale(0.92);
+        filter: blur(10px);
+        will-change: transform, opacity, filter;
         transition:
-          transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-          opacity 1s ease;
+          transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
+          opacity 1.2s ease 0.12s,
+          filter 1.2s ease 0.12s;
         width: 95vw;
         max-width: 1200px;
         display: flex;
@@ -362,9 +391,9 @@
       .scattered .text-wrapper {
         opacity: 1;
         transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0px);
       }
 
-      /* Guaranteed 1 line, responsive sizing */
       .intro-heading {
         background: linear-gradient(
           to bottom,
@@ -380,7 +409,6 @@
         line-height: 1;
         width: 100%;
         filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
-
         font-size: clamp(20px, 4.8vw, 85px);
         letter-spacing: 1.5px;
         white-space: nowrap;
@@ -397,15 +425,20 @@
         white-space: nowrap;
       }
 
-      body.scrolled #intro-section .img-wrapper,
-      body.scrolled #intro-section .text-wrapper {
-        transform: scale(0.6) translate3d(0, -15vh, 0) !important;
+      body.scrolled #intro-section .img-wrapper {
+        transform: translate3d(-50%, -65vh, -150px) scale(0.5) !important;
         opacity: 0 !important;
+        filter: blur(12px) !important;
+        transition-delay: 0s !important;
+      }
+      body.scrolled #intro-section .text-wrapper {
+        transform: scale(0.75) translate3d(0, -15vh, 0) !important;
+        opacity: 0 !important;
+        filter: blur(8px) !important;
+        transition-delay: 0s !important;
       }
 
-      /* =========================================
-           MAIN VIEW: INSTAGRAM-STYLE NATIVE SLIDER 
-           ========================================= */
+      /* MAIN VIEW: INSTAGRAM-STYLE NATIVE SLIDER */
       #slider-section {
         position: relative;
         width: 100%;
@@ -448,7 +481,6 @@
         background-repeat: no-repeat;
       }
 
-      /* Slide background images and dark layering (b1.png to b6.png) */
       .slide:nth-child(1) {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
@@ -480,7 +512,6 @@
           url("b6.png");
       }
 
-      /* Laptop slider buttons */
       .slider-btn {
         position: absolute;
         top: 50%;
@@ -588,9 +619,7 @@
         transform: scale(1.3);
       }
 
-      /* =========================================
-           DEDICATED VIEWS
-           ========================================= */
+      /* DEDICATED VIEWS (Global) */
       .dedicated-section {
         display: flex;
         flex-direction: column;
@@ -653,6 +682,7 @@
         transform: scale(1.02);
       }
 
+      /* DEDICATED PRODUCT / EQUIPMENT MINI SLIDESHOW */
       .mini-slideshow {
         width: clamp(200px, 30vw, 280px);
         height: clamp(120px, 20vw, 180px);
@@ -733,8 +763,74 @@
       }
 
       /* =========================================
-           DUAL MARQUEES (No Opacity / No Grayscale)
-           ========================================= */
+         MACHINING FACILITIES SELECTABLE LIST
+         ========================================= */
+      .machine-category-item {
+        cursor: default !important;
+      }
+      .selectable-machine-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 15px;
+        width: 100%;
+      }
+      .selectable-machine {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        color: #888;
+        cursor: pointer;
+        padding: 10px 15px;
+        border-left: 4px solid transparent;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        background: rgba(0, 0, 0, 0.03);
+        border-radius: 0 6px 6px 0;
+        display: flex;
+        align-items: center;
+      }
+      body.dark-mode .selectable-machine {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .selectable-machine:hover {
+        color: #d50000;
+        background: rgba(213, 0, 0, 0.08);
+        transform: translateX(5px);
+      }
+      .selectable-machine.active {
+        color: #d50000;
+        border-left: 4px solid #d50000;
+        font-weight: 700;
+        background: rgba(213, 0, 0, 0.12);
+        transform: translateX(5px);
+      }
+      .machine-display {
+        width: clamp(220px, 35vw, 400px);
+        height: clamp(160px, 25vw, 280px);
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        flex-shrink: 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--border-color);
+      }
+      .active-machine-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:
+          opacity 0.3s ease,
+          transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .active-machine-img.fade-out {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      /* DUAL MARQUEES */
       .marquee-section {
         padding: 40px 0;
         background-color: var(--bg-color);
@@ -765,8 +861,6 @@
         animation: scrollMarquee 20s linear infinite;
         align-items: center;
       }
-
-      /* NORMAL, SOLID MARQUEE IMAGES */
       .marquee-content img {
         height: clamp(35px, 6vw, 50px);
         margin: 0 clamp(25px, 4vw, 45px);
@@ -778,7 +872,6 @@
       .marquee-content img:hover {
         transform: scale(1.08);
       }
-
       @keyframes scrollMarquee {
         0% {
           transform: translateX(0);
@@ -788,9 +881,7 @@
         }
       }
 
-      /* =========================================
-           CONTACT US FOOTER
-           ========================================= */
+      /* FOOTER */
       footer {
         background-color: #111111;
         color: #ffffff;
@@ -841,9 +932,7 @@
         color: #d50000;
       }
 
-      /* =========================================
-           PERFECT MOBILE UX (PHONES & TABLETS)
-           ========================================= */
+      /* PERFECT MOBILE UX */
       @media (max-width: 950px) {
         header {
           display: block;
@@ -869,13 +958,11 @@
           font-size: 26px;
           color: var(--text-color);
           cursor: pointer;
-          user-select: none;
           flex: 0 0 auto;
           line-height: 1;
           width: 28px;
           text-align: center;
         }
-
         .logo-container {
           gap: 8px;
           width: 100%;
@@ -887,8 +974,6 @@
         .logo-title {
           font-size: clamp(10px, 3.8vw, 15px);
         }
-
-        /* Show mobile title (without trailing dot), hide desktop title */
         .logo-title-desktop {
           display: none;
         }
@@ -896,7 +981,6 @@
           display: inline;
         }
 
-        /* Mobile Drawer */
         nav#navbar {
           position: absolute;
           top: 100%;
@@ -956,7 +1040,6 @@
           text-align: left;
           white-space: normal;
         }
-
         .dropdown-menu {
           position: relative;
           top: 0;
@@ -988,7 +1071,7 @@
           opacity: 0.85;
         }
 
-        /* Intro Mobile Adjustments */
+        /* Intro Mobile Equilateral Triangle Adjustments */
         #intro-section {
           width: 100%;
           min-height: 100svh;
@@ -996,65 +1079,29 @@
           padding: 0;
           overflow: hidden;
         }
-
-        .image-container {
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          display: block;
-        }
-
         .img-wrapper {
-          position: absolute;
-          width: clamp(50px, 12vw, 90px);
-          height: clamp(50px, 12vw, 90px);
-          margin: 0;
-          flex-shrink: 0;
-          transform-origin: center center;
-          /* Adding top and left transition for perfectly smooth scattering on mobile */
-          transition:
-            transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
-            opacity 0.8s ease,
-            top 1.2s cubic-bezier(0.25, 1, 0.5, 1),
-            left 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+          width: clamp(65px, 18vw, 105px);
+          height: clamp(65px, 18vw, 105px);
         }
 
-        /* INITIAL STATE ON MOBILE (Stacked vertically in the middle) */
-        .img-1 {
-          left: 50%;
-          top: 35%;
-          transform: translate(-50%, -50%);
-        }
-        .img-2 {
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .img-3 {
-          left: 50%;
-          top: 65%;
-          transform: translate(-50%, -50%);
-        }
-
-        /* SCATTERED STATE ON MOBILE (Three different directions, no overlap with center text) */
-        .scattered .img-1 {
-          left: 15%;
-          top: 15%;
-          transform: translate(-50%, -50%) scale(0.9);
-          opacity: 1;
-        }
+        /* SCATTERED EQUILATERAL TRIANGLE ON MOBILE: 2 at Top, 1 & 3 at Bottom */
         .scattered .img-2 {
-          left: 50%;
-          top: 85%;
-          transform: translate(-50%, -50%) scale(0.9);
+          transform: translate3d(-50%, calc(-50% - 22vh), 0) scale(1)
+            rotateX(0deg) rotateZ(0deg);
           opacity: 1;
+          filter: blur(0px);
+        }
+        .scattered .img-1 {
+          transform: translate3d(calc(-50% - 28vw), calc(-50% + 20vh), 0)
+            scale(1) rotateX(0deg) rotateZ(0deg);
+          opacity: 1;
+          filter: blur(0px);
         }
         .scattered .img-3 {
-          left: 85%;
-          top: 15%;
-          transform: translate(-50%, -50%) scale(0.9);
+          transform: translate3d(calc(-50% + 28vw), calc(-50% + 20vh), 0)
+            scale(1) rotateX(0deg) rotateZ(0deg);
           opacity: 1;
+          filter: blur(0px);
         }
 
         .intro-heading {
@@ -1067,11 +1114,9 @@
           margin-top: 8px;
         }
 
-        /* Hide desktop slider buttons, phones will use native swipe */
         .slider-btn {
           display: none;
         }
-
         #slider-section {
           width: 100%;
           min-height: 0;
@@ -1080,7 +1125,6 @@
           display: block;
           overflow: visible;
         }
-
         .slide h2 {
           font-size: clamp(2.6rem, 12vw, 3.6rem);
           margin: 0 0 18px 0;
@@ -1116,7 +1160,6 @@
           height: 10px;
         }
 
-        /* Tighten Dedicated Sections */
         .dedicated-section {
           padding: 105px 5vw 55px 5vw;
           min-height: auto;
@@ -1148,6 +1191,9 @@
           min-height: 170px;
           margin-top: 4px;
         }
+        .machine-display {
+          margin-top: 10px;
+        }
         footer {
           padding: 60px 6vw;
           gap: 35px;
@@ -1162,10 +1208,7 @@
     <!-- HEADER / NAVBAR -->
     <header id="main-header">
       <div class="header-inner">
-        <!-- Hamburger -->
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
-
-        <!-- Logo & ONE LINE Text -->
         <div class="logo-container" onclick="navigateTo('main-view', null, 0)">
           <img
             src="1.png"
@@ -1194,7 +1237,6 @@
             >
           </li>
 
-          <!-- Quality Dropdown (Contains Inspection Equipments & ISO Cert) -->
           <li class="dropdown">
             <a onclick="navigateTo('main-view', 'slider-section', 4)"
               >Quality ▾</a
@@ -1213,7 +1255,6 @@
             </ul>
           </li>
 
-          <!-- Machining Facilities Dropdown -->
           <li class="dropdown">
             <a
               onclick="navigateTo('machines-view', null)"
@@ -1245,20 +1286,16 @@
       </nav>
     </header>
 
-    <!-- =======================================================
-         VIEW 1: MAIN HOME VIEW
-         ======================================================= -->
+    <!-- VIEW 1: MAIN HOME VIEW -->
     <div id="main-view" class="page-view active">
-      <!-- PERFECTLY CENTERED INTRO, NO OVERLAPS -->
+      <!-- PERFECTLY CENTERED INTRO (Equilateral Triangle: 2 Top, 1 & 3 Bottom) -->
       <section id="intro-section">
         <div class="image-container" id="img-container">
-          <!-- Images kept strictly within the screen bounds via CSS -->
           <div class="img-wrapper img-1"><img src="1.png" alt="Image 1" /></div>
           <div class="img-wrapper img-2"><img src="2.png" alt="Image 2" /></div>
           <div class="img-wrapper img-3"><img src="3.png" alt="Image 3" /></div>
         </div>
 
-        <!-- Clean HTML Text Block (1 Line Guarantee) -->
         <div class="text-wrapper" id="intro-text">
           <h1 class="intro-heading">MARVELOUS PRECISION PVT. LTD.</h1>
           <p class="intro-tagline">
@@ -1269,7 +1306,6 @@
 
       <!-- INSTAGRAM STYLE SLIDER -->
       <section id="slider-section">
-        <!-- Desktop Left/Right Buttons -->
         <button class="slider-btn prev" onclick="prevSlide()">❮</button>
         <button class="slider-btn next" onclick="nextSlide()">❯</button>
 
@@ -1562,9 +1598,7 @@
       </footer>
     </div>
 
-    <!-- =======================================================
-         VIEW 2: DEDICATED MACHINING FACILITIES "TAB"
-         ======================================================= -->
+    <!-- VIEW 2: DEDICATED MACHINING FACILITIES "TAB" -->
     <div id="machines-view" class="page-view">
       <section class="dedicated-section">
         <button
@@ -1576,106 +1610,88 @@
         <h2 class="section-header">MACHINING FACILITIES</h2>
 
         <div class="interactive-list">
-          <div class="interactive-item">
+          <!-- CNC MACHINES -->
+          <div class="interactive-item machine-category-item">
             <div class="item-text-content">
               <span class="interactive-name">CNC MACHINES</span>
-              <p class="item-desc">
-                SPINNER 15 J (Chuck 10"), GOODWAY GLS 2000 (Chuck 8"), ASKAR
-                MICRON SPINNER 18 (Chuck 12").
-              </p>
+              <div class="selectable-machine-list">
+                <div class="selectable-machine active" data-img="c1.png">
+                  SPINNER 15 J (Chuck 10")
+                </div>
+                <div class="selectable-machine" data-img="c2.png">
+                  GOODWAY GLS 2000 (Chuck 8")
+                </div>
+                <div class="selectable-machine" data-img="c3.png">
+                  ASKAR MICRON SPINNER 18 (Chuck 12")
+                </div>
+              </div>
             </div>
-            <div class="mini-slideshow">
+            <div class="machine-display">
               <img
                 src="c1.png"
-                class="slide-img img-1"
-                alt="CNC 1"
+                class="active-machine-img"
+                alt="CNC Machine"
                 onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=c1.png'
-                "
-              />
-              <img
-                src="c2.png"
-                class="slide-img img-2"
-                alt="CNC 2"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=c2.png'
-                "
-              />
-              <img
-                src="c3.png"
-                class="slide-img img-3"
-                alt="CNC 3"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=c3.png'
+                  this.src =
+                    'https://via.placeholder.com/400x280?text=CNC+Machine'
                 "
               />
             </div>
           </div>
-          <div class="interactive-item">
+
+          <!-- VMC MACHINES -->
+          <div class="interactive-item machine-category-item">
             <div class="item-text-content">
               <span class="interactive-name">VMC MACHINES</span>
-              <p class="item-desc">
-                COSMOS CVM 1060 (X-1060, Y-610, Z-600), BFW BMV 45TC24++, COSMOS
-                CVM 800.
-              </p>
+              <div class="selectable-machine-list">
+                <div class="selectable-machine active" data-img="v1.png">
+                  COSMOS CVM 1060 (X-1060, Y-610, Z-600)
+                </div>
+                <div class="selectable-machine" data-img="v2.png">
+                  BFW BMV 45TC24++
+                </div>
+                <div class="selectable-machine" data-img="v3.png">
+                  COSMOS CVM 800
+                </div>
+              </div>
             </div>
-            <div class="mini-slideshow">
+            <div class="machine-display">
               <img
                 src="v1.png"
-                class="slide-img img-1"
-                alt="VMC 1"
+                class="active-machine-img"
+                alt="VMC Machine"
                 onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=v1.png'
-                "
-              />
-              <img
-                src="v2.png"
-                class="slide-img img-2"
-                alt="VMC 2"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=v2.png'
-                "
-              />
-              <img
-                src="v3.png"
-                class="slide-img img-3"
-                alt="VMC 3"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=v3.png'
+                  this.src =
+                    'https://via.placeholder.com/400x280?text=VMC+Machine'
                 "
               />
             </div>
           </div>
-          <div class="interactive-item">
+
+          <!-- HMC MACHINES -->
+          <div class="interactive-item machine-category-item">
             <div class="item-text-content">
               <span class="interactive-name">HMC MACHINES</span>
-              <p class="item-desc">
-                BFW PRIMA 44/54/55 Pro, HYUNDAI WIA HS6308, ACE MCH 400.
-              </p>
+              <div class="selectable-machine-list">
+                <div class="selectable-machine active" data-img="h1.png">
+                  BFW PRIMA 44/54/55 Pro
+                </div>
+                <div class="selectable-machine" data-img="h2.png">
+                  HYUNDAI WIA HS6308
+                </div>
+                <div class="selectable-machine" data-img="h3.png">
+                  ACE MCH 400
+                </div>
+              </div>
             </div>
-            <div class="mini-slideshow">
+            <div class="machine-display">
               <img
                 src="h1.png"
-                class="slide-img img-1"
-                alt="HMC 1"
+                class="active-machine-img"
+                alt="HMC Machine"
                 onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=h1.png'
-                "
-              />
-              <img
-                src="h2.png"
-                class="slide-img img-2"
-                alt="HMC 2"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=h2.png'
-                "
-              />
-              <img
-                src="h3.png"
-                class="slide-img img-3"
-                alt="HMC 3"
-                onerror="
-                  this.src = 'https://via.placeholder.com/300x180?text=h3.png'
+                  this.src =
+                    'https://via.placeholder.com/400x280?text=HMC+Machine'
                 "
               />
             </div>
@@ -1684,9 +1700,7 @@
       </section>
     </div>
 
-    <!-- =======================================================
-         VIEW 3: DEDICATED INSPECTION EQUIPMENTS "TAB"
-         ======================================================= -->
+    <!-- VIEW 3: DEDICATED INSPECTION EQUIPMENTS "TAB" -->
     <div id="equipments-view" class="page-view">
       <section class="dedicated-section">
         <button
@@ -1797,9 +1811,7 @@
       </section>
     </div>
 
-    <!-- =======================================================
-         VIEW 4: DEDICATED PRODUCTS "TAB"
-         ======================================================= -->
+    <!-- VIEW 4: DEDICATED PRODUCTS "TAB" -->
     <div id="products-view" class="page-view">
       <section class="dedicated-section">
         <button class="back-btn" onclick="navigateTo('main-view', null, 0)">
@@ -1984,12 +1996,12 @@
     </div>
 
     <script>
-      // --- Mobile Hamburger Menu Logic ---
+      // Mobile Hamburger Menu Logic
       function toggleMenu() {
         document.getElementById("navbar").classList.toggle("open");
       }
 
-      // --- View Router & Smooth Scrolling ---
+      // View Router & Smooth Scrolling
       function navigateTo(viewId, targetId, slideIndex = null) {
         const mobileNav = document.getElementById("navbar");
         if (mobileNav && mobileNav.classList.contains("open")) {
@@ -2021,14 +2033,13 @@
         }, 30);
       }
 
-      // --- Instagram-Style Native Slider Logic ---
+      // Instagram-Style Native Slider Logic
       const sliderTrack = document.getElementById("slider-track");
       const dots = document.querySelectorAll(".dot");
       const slides = document.querySelectorAll(".slide");
       let slideInterval;
       let currentSlide = 0;
 
-      // Update dots dynamically based on scroll position
       function updateDots() {
         if (!sliderTrack) return;
         const slideWidth = sliderTrack.clientWidth;
@@ -2078,11 +2089,13 @@
           document.body.classList.toggle("dark-mode");
         });
 
+        // Trigger intro animation
         const introSection = document.getElementById("intro-section");
         setTimeout(() => {
           introSection.classList.add("scattered");
-        }, 800);
+        }, 500);
 
+        // Header Scrolled State
         let ticking = false;
         window.addEventListener(
           "scroll",
@@ -2104,7 +2117,10 @@
 
         resetInterval();
 
-        const interactiveItems = document.querySelectorAll(".interactive-item");
+        // General Interactive Items (Products/Equipments)
+        const interactiveItems = document.querySelectorAll(
+          ".interactive-item:not(.machine-category-item)",
+        );
         interactiveItems.forEach((item) => {
           item.addEventListener("click", () => {
             const parent = item.parentElement;
@@ -2113,6 +2129,32 @@
               if (f !== item) f.classList.remove("active");
             });
             item.classList.toggle("active");
+          });
+        });
+
+        // Selectable Machine Options (CNC, VMC, HMC)
+        const selectableMachines = document.querySelectorAll(
+          ".selectable-machine",
+        );
+        selectableMachines.forEach((machine) => {
+          machine.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            const siblings = this.parentElement.querySelectorAll(
+              ".selectable-machine",
+            );
+            siblings.forEach((s) => s.classList.remove("active"));
+            this.classList.add("active");
+
+            const imgSrc = this.getAttribute("data-img");
+            const container = this.closest(".machine-category-item");
+            const imgElement = container.querySelector(".active-machine-img");
+
+            imgElement.classList.add("fade-out");
+            setTimeout(() => {
+              imgElement.src = imgSrc;
+              imgElement.classList.remove("fade-out");
+            }, 300);
           });
         });
       });
