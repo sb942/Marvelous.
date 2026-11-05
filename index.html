@@ -83,6 +83,46 @@
         }
       }
 
+      /* THEME TOGGLE */
+      #theme-toggle {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: none;
+        background-color: var(--text-color);
+        color: var(--bg-color);
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #theme-toggle:hover {
+        transform: scale(1.1);
+      }
+      @media (max-width: 768px) {
+        #theme-toggle {
+          width: 20px;
+          height: 20px;
+          padding: 0;
+          right: 9px;
+          bottom: 9px;
+          border: 1px solid currentColor;
+          border-radius: 50%;
+          background: transparent;
+          color: var(--text-color);
+          box-shadow: none;
+          opacity: 0.22;
+          font-size: 0;
+        }
+      }
+
       /* NAVIGATION BAR */
       header {
         position: fixed;
@@ -1544,6 +1584,13 @@
         font-size: 0.9rem;
         line-height: 1.8;
       }
+      #theme-toggle {
+        width: 46px;
+        height: 46px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.15);
+      }
+
       @media (max-width: 1100px) {
         header {
           padding-inline: 22px;
@@ -1665,6 +1712,14 @@
           padding: 60px 7vw;
           gap: 35px;
         }
+        #theme-toggle {
+          width: 38px;
+          height: 38px;
+          right: 16px;
+          bottom: 16px;
+          opacity: 0.9;
+          font-size: 18px;
+        }
       }
       @media (max-width: 640px) {
         #intro-section {
@@ -1761,6 +1816,12 @@
           font-size: 1.8rem;
           margin-bottom: 14px;
         }
+        #theme-toggle {
+          width: 36px;
+          height: 36px;
+          right: 12px;
+          bottom: 12px;
+        }
       }
       @media (prefers-reduced-motion: reduce) {
         *,
@@ -1775,6 +1836,9 @@
     </style>
   </head>
   <body>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" title="Toggle Dark/Light Mode"></button>
+
     <!-- HEADER / NAVBAR -->
     <header id="main-header">
       <div class="header-inner">
@@ -2627,6 +2691,11 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
+        const themeToggle = document.getElementById("theme-toggle");
+        themeToggle.addEventListener("click", () => {
+          document.body.classList.toggle("dark-mode");
+        });
+
         // Trigger intro animation
         const introSection = document.getElementById("intro-section");
         requestAnimationFrame(() => {
