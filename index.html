@@ -494,19 +494,14 @@
       .slide:nth-child(3) {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-          url("b3.png");
+          url("b4.png");
       }
       .slide:nth-child(4) {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-          url("b4.png");
-      }
-      .slide:nth-child(5) {
-        background-image:
-          linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
           url("b5.png");
       }
-      .slide:nth-child(6) {
+      .slide:nth-child(5) {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
           url("b6.png");
@@ -692,8 +687,8 @@
         flex-shrink: 0;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         background-color: #fff;
-        opacity: 0;
-        transform: scale(0.95);
+        opacity: 1;
+        transform: scale(1);
         transition: all 0.25s ease;
       }
       .interactive-item:hover .mini-slideshow,
@@ -708,7 +703,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        opacity: 0;
+        opacity: 1;
       }
 
       .interactive-item:hover .img-1,
@@ -1232,13 +1227,13 @@
             >
           </li>
           <li>
-            <a onclick="navigateTo('main-view', 'slider-section', 3)"
+            <a onclick="navigateTo('main-view', 'slider-section', 2)"
               >Infrastructure</a
             >
           </li>
 
           <li class="dropdown">
-            <a onclick="navigateTo('main-view', 'slider-section', 4)"
+            <a onclick="navigateTo('main-view', 'slider-section', 3)"
               >Quality ▾</a
             >
             <ul class="dropdown-menu">
@@ -1248,7 +1243,7 @@
                 >
               </li>
               <li>
-                <a onclick="navigateTo('main-view', 'slider-section', 5)"
+                <a onclick="navigateTo('main-view', 'slider-section', 4)"
                   >ISO Certificate</a
                 >
               </li>
@@ -1362,29 +1357,6 @@
 
           <!-- Slide 2 -->
           <div class="slide">
-            <h2>Registration Details</h2>
-            <ul
-              style="
-                max-width: 580px;
-                background: rgba(32, 32, 32, 0.85);
-                padding: 25px 30px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-              "
-            >
-              <li><strong>CIN:</strong> U29300PN2010PTC135369</li>
-              <li><strong>GST NUMBER:</strong> 27AAGCM3307B1Z7</li>
-              <li><strong>ROC:</strong> ROC – PUNE, MAHARASHTRA</li>
-              <li><strong>CLASS OF COMPANY:</strong> PRIVATE</li>
-              <li><strong>INCORPORATION:</strong> 20 JANUARY 2010</li>
-              <li><strong>EXPORTER CODE (IEC):</strong> 3109020611</li>
-              <li><strong>CERC NUMBER:</strong> AAGCM3307BEM001</li>
-            </ul>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="slide">
             <h2>Infrastructure</h2>
             <p>
               Our eco-friendly manufacturing facility is located in the
@@ -1411,7 +1383,7 @@
             </ul>
           </div>
 
-          <!-- Slide 4 -->
+          <!-- Slide 3 -->
           <div class="slide">
             <h2>Quality</h2>
             <p>
@@ -1433,7 +1405,7 @@
             </button>
           </div>
 
-          <!-- Slide 5 -->
+          <!-- Slide 4 -->
           <div class="slide">
             <h2>ISO 9001:2015 Certification</h2>
             <p>
@@ -1458,7 +1430,6 @@
           <span class="dot" onclick="goToSlide(2)"></span>
           <span class="dot" onclick="goToSlide(3)"></span>
           <span class="dot" onclick="goToSlide(4)"></span>
-          <span class="dot" onclick="goToSlide(5)"></span>
         </div>
       </section>
 
@@ -1603,7 +1574,7 @@
       <section class="dedicated-section">
         <button
           class="back-btn"
-          onclick="navigateTo('main-view', 'slider-section', 3)"
+          onclick="navigateTo('main-view', 'slider-section', 2)"
         >
           ← Back to Home
         </button>
@@ -1676,9 +1647,6 @@
                 <div class="selectable-machine active" data-img="h1.png">
                   BFW PRIMA 44/54/55 Pro
                 </div>
-                <div class="selectable-machine" data-img="h2.png">
-                  HYUNDAI WIA HS6308
-                </div>
                 <div class="selectable-machine" data-img="h3.png">
                   ACE MCH 400
                 </div>
@@ -1705,7 +1673,7 @@
       <section class="dedicated-section">
         <button
           class="back-btn"
-          onclick="navigateTo('main-view', 'slider-section', 4)"
+          onclick="navigateTo('main-view', 'slider-section', 3)"
         >
           ← Back to Quality Menu
         </button>
