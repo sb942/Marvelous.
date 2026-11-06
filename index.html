@@ -83,46 +83,6 @@
         }
       }
 
-      /* THEME TOGGLE */
-      #theme-toggle {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        border: none;
-        background-color: var(--text-color);
-        color: var(--bg-color);
-        font-size: 22px;
-        cursor: pointer;
-        z-index: 9999;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-        transition: transform 0.2s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      #theme-toggle:hover {
-        transform: scale(1.1);
-      }
-      @media (max-width: 768px) {
-        #theme-toggle {
-          width: 20px;
-          height: 20px;
-          padding: 0;
-          right: 9px;
-          bottom: 9px;
-          border: 1px solid currentColor;
-          border-radius: 50%;
-          background: transparent;
-          color: var(--text-color);
-          box-shadow: none;
-          opacity: 0.22;
-          font-size: 0;
-        }
-      }
-
       /* NAVIGATION BAR */
       header {
         position: fixed;
@@ -1584,13 +1544,6 @@
         font-size: 0.9rem;
         line-height: 1.8;
       }
-      #theme-toggle {
-        width: 46px;
-        height: 46px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.15);
-      }
-
       @media (max-width: 1100px) {
         header {
           padding-inline: 22px;
@@ -1712,14 +1665,6 @@
           padding: 60px 7vw;
           gap: 35px;
         }
-        #theme-toggle {
-          width: 38px;
-          height: 38px;
-          right: 16px;
-          bottom: 16px;
-          opacity: 0.9;
-          font-size: 18px;
-        }
       }
       @media (max-width: 640px) {
         #intro-section {
@@ -1816,13 +1761,58 @@
           font-size: 1.8rem;
           margin-bottom: 14px;
         }
-        #theme-toggle {
-          width: 36px;
-          height: 36px;
-          right: 12px;
-          bottom: 12px;
+      }
+      /* Full-width mobile header: menu anchored to the true left edge and full brand name visible. */
+      @media (max-width: 950px) {
+        header {
+          width: 100%;
+          left: 0;
+          right: 0;
+          padding: 0;
+          overflow: visible;
+        }
+        .header-inner {
+          width: 100%;
+          min-height: 70px;
+          padding: 10px 12px;
+          gap: 8px;
+          margin: 0;
+        }
+        .menu-icon {
+          width: 24px;
+          flex: 0 0 24px;
+          margin: 0;
+          padding: 0;
+          text-align: left;
+          font-size: 24px;
+        }
+        .logo-container {
+          flex: 1 1 auto;
+          min-width: 0;
+          width: auto;
+          gap: 7px;
+          overflow: visible;
+        }
+        .logo-container img {
+          height: 28px;
+          flex: 0 0 auto;
+        }
+        .logo-title {
+          flex: 1 1 auto;
+          min-width: 0;
+          overflow: visible;
+          text-overflow: clip;
+          white-space: nowrap;
+          font-size: clamp(8px, 2.75vw, 12px) !important;
+          letter-spacing: 0 !important;
+          line-height: 1;
+        }
+        .logo-title-mobile {
+          display: inline;
+          white-space: nowrap;
         }
       }
+
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -1836,9 +1826,6 @@
     </style>
   </head>
   <body>
-    <!-- Theme Toggle -->
-    <button id="theme-toggle" title="Toggle Dark/Light Mode"></button>
-
     <!-- HEADER / NAVBAR -->
     <header id="main-header">
       <div class="header-inner">
@@ -1853,7 +1840,7 @@
             <span class="logo-title-desktop"
               >MARVELOUS PRECISION PVT. LTD.</span
             >
-            <span class="logo-title-mobile">MARVELOUS PRECISION PVT. LTD</span>
+            <span class="logo-title-mobile">MARVELOUS PRECISION PVT. LTD.</span>
           </span>
         </div>
       </div>
@@ -1925,8 +1912,8 @@
       <!-- PERFECTLY CENTERED INTRO (Equilateral Triangle: 2 Top, 1 & 3 Bottom) -->
       <section id="intro-section">
         <div class="image-container" id="img-container">
-          <div class="img-wrapper img-1"><img src="1.png" alt="Image 1" /></div>
-          <div class="img-wrapper img-2"><img src="2.png" alt="Image 2" /></div>
+          <div class="img-wrapper img-1"><img src="2.png" alt="Image 2" /></div>
+          <div class="img-wrapper img-2"><img src="1.png" alt="Image 1" /></div>
           <div class="img-wrapper img-3"><img src="3.png" alt="Image 3" /></div>
         </div>
 
@@ -2284,10 +2271,13 @@
               <span class="interactive-name">HMC MACHINES</span>
               <div class="selectable-machine-list">
                 <div class="selectable-machine active" data-img="h1.png">
-                  BFW PRIMA 44/54/55 Pro
+                  BFW PRIMA 44 Pro BT40
+                </div>
+                <div class="selectable-machine" data-img="h2.png">
+                  BFW PRIMA 54 Pro
                 </div>
                 <div class="selectable-machine" data-img="h3.png">
-                  ACE MCH 400
+                  BFW PRIMA 55 PRO BT50
                 </div>
               </div>
             </div>
@@ -2295,7 +2285,7 @@
               <img
                 src="h1.png"
                 class="active-machine-img"
-                alt="HMC Machine"
+                alt="BFW PRIMA 44 Pro BT40 HMC Machine"
                 onerror="
                   this.src =
                     'https://via.placeholder.com/400x280?text=HMC+Machine'
@@ -2691,11 +2681,6 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        const themeToggle = document.getElementById("theme-toggle");
-        themeToggle.addEventListener("click", () => {
-          document.body.classList.toggle("dark-mode");
-        });
-
         // Trigger intro animation
         const introSection = document.getElementById("intro-section");
         requestAnimationFrame(() => {
