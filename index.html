@@ -1813,6 +1813,398 @@
         }
       }
 
+      /* =====================================================
+         HERO 3D CNC STAGE, BAS-RELIEF & TELEMETRY ARCHITECTURE
+         Strictly isolated inside #hero-stage-bg (z-index: 0)
+         ===================================================== */
+      .hero-stage-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      /* 1. Studio Showroom Horizon & Floor Reflection */
+      .hero-studio-floor {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          radial-gradient(
+            120% 72% at 50% 24%,
+            rgba(255, 255, 255, 0.92) 0%,
+            rgba(236, 236, 232, 0.55) 54%,
+            rgba(208, 209, 204, 0.72) 100%
+          ),
+          linear-gradient(
+            to bottom,
+            #f4f4f2 0%,
+            #e8e8e4 66%,
+            #d7d8d3 68.5%,
+            #e5e5e1 76%,
+            #ededeb 100%
+          );
+        transition:
+          opacity 0.4s ease,
+          background 0.4s ease;
+      }
+
+      .hero-studio-floor::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 33%;
+        background:
+          radial-gradient(
+            58% 90% at 50% 0%,
+            rgba(20, 22, 24, 0.14) 0%,
+            rgba(20, 22, 24, 0.04) 48%,
+            transparent 80%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.55) 0px,
+            rgba(255, 255, 255, 0) 2px
+          );
+        border-top: 1px solid rgba(20, 20, 20, 0.065);
+      }
+
+      body.dark-mode .hero-studio-floor {
+        background:
+          radial-gradient(
+            115% 68% at 50% 26%,
+            rgba(46, 50, 54, 0.52) 0%,
+            rgba(18, 20, 20, 0.86) 58%,
+            rgba(9, 10, 10, 0.98) 100%
+          ),
+          linear-gradient(
+            to bottom,
+            #161818 0%,
+            #101212 66%,
+            #080909 68.5%,
+            #131515 78%,
+            #101111 100%
+          );
+      }
+
+      body.dark-mode .hero-studio-floor::after {
+        background:
+          radial-gradient(
+            58% 95% at 50% 0%,
+            rgba(0, 0, 0, 0.72) 0%,
+            rgba(180, 195, 212, 0.035) 45%,
+            transparent 82%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.07) 0px,
+            rgba(255, 255, 255, 0) 2px
+          );
+        border-top: 1px solid rgba(255, 255, 255, 0.055);
+      }
+
+      /* 2. Monumental Cast-Metal Bas-Relief Background Typography */
+      .hero-bas-relief {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: clamp(82px, 11vh, 118px) 0 clamp(78px, 11vh, 116px);
+        overflow: hidden;
+      }
+
+      .hero-bas-relief .bas-line {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-family: "Bebas Neue", "Montserrat", sans-serif;
+        font-weight: 900;
+        font-size: 22vw;
+        line-height: 0.78;
+        letter-spacing: 0.032em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        /* Light Mode: Bead-blasted cast aluminum debossed/embossed relief (~11% contrast) */
+        color: rgba(24, 26, 28, 0.055);
+        text-shadow:
+          -1.5px -1.5px 1px rgba(15, 17, 19, 0.13),
+          1.5px 1.5px 1px rgba(255, 255, 255, 0.92),
+          0 10px 26px rgba(15, 17, 19, 0.045);
+        transition:
+          color 0.35s ease,
+          text-shadow 0.35s ease;
+      }
+
+      body.dark-mode .hero-bas-relief .bas-line {
+        /* Dark Mode: Forged gunmetal bas-relief (~12% contrast) */
+        color: rgba(255, 255, 255, 0.038);
+        text-shadow:
+          0 -1.5px 1px rgba(255, 255, 255, 0.11),
+          0 2px 3px rgba(0, 0, 0, 0.92),
+          0 14px 30px rgba(0, 0, 0, 0.55);
+      }
+
+      /* 3. Real-Time Three.js Procedural CNC WebGL Canvas */
+      #hero-cnc-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        display: block;
+        pointer-events: none;
+      }
+
+      /* 4. Adaptive Radial Contrast Backdrop behind Center Lockup */
+      .hero-contrast-halo {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        background: radial-gradient(
+          ellipse 44% 24% at 50% 50%,
+          rgba(242, 242, 240, 0.9) 0%,
+          rgba(242, 242, 240, 0.64) 46%,
+          rgba(242, 242, 240, 0.16) 74%,
+          rgba(242, 242, 240, 0) 100%
+        );
+        transition: background 0.35s ease;
+      }
+
+      body.dark-mode .hero-contrast-halo {
+        background: radial-gradient(
+          ellipse 44% 24% at 50% 50%,
+          rgba(15, 16, 15, 0.9) 0%,
+          rgba(15, 16, 15, 0.66) 46%,
+          rgba(15, 16, 15, 0.18) 74%,
+          rgba(15, 16, 15, 0) 100%
+        );
+      }
+
+      /* 5. Bottom-Docked Solid Industrial Spec / Telemetry Strip */
+      .hero-spec-bar {
+        position: absolute;
+        left: clamp(22px, 5vw, 76px);
+        right: clamp(
+          86px,
+          7.5vw,
+          128px
+        ); /* Explicit right clearance for theme toggle & nav */
+        bottom: 20px;
+        z-index: 5;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        background: rgba(250, 250, 248, 0.86);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(20, 20, 20, 0.15);
+        box-shadow:
+          0 10px 28px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      body.dark-mode .hero-spec-bar {
+        background: rgba(22, 24, 23, 0.88);
+        border-color: rgba(255, 255, 255, 0.13);
+        box-shadow:
+          0 14px 34px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .hero-spec-bar::before {
+        content: "";
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        bottom: -1px;
+        width: 3px;
+        background: var(--accent, #c81018);
+      }
+
+      .spec-cell {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 13px 18px;
+        border-right: 1px solid rgba(20, 20, 20, 0.11);
+        font-family: "Inter", sans-serif;
+        font-size: clamp(0.66rem, 0.82vw, 0.76rem);
+        line-height: 1.2;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      body.dark-mode .spec-cell {
+        border-right-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .spec-cell:last-child {
+        border-right: none;
+      }
+
+      .spec-key {
+        font-weight: 700;
+        color: var(--muted, #707070);
+      }
+
+      .spec-sep {
+        font-weight: 800;
+        color: var(--accent, #c81018);
+      }
+
+      .spec-val {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 800;
+        color: var(--text-color);
+        letter-spacing: 0.065em;
+      }
+
+      /* Bottom-Right Industrial Theme Toggle (Preserves exact clearance zone) */
+      .industrial-theme-toggle {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 44px;
+        height: 44px;
+        z-index: 9002;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+        cursor: pointer;
+        transition:
+          background-color 0.25s ease,
+          color 0.25s ease,
+          border-color 0.25s ease,
+          transform 0.2s ease;
+      }
+
+      .industrial-theme-toggle:hover {
+        border-color: var(--accent, #c81018);
+        color: var(--accent, #c81018);
+        transform: translateY(-2px);
+      }
+
+      .industrial-theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .industrial-theme-toggle .icon-sun {
+        display: none;
+      }
+      body.dark-mode .industrial-theme-toggle .icon-sun {
+        display: block;
+      }
+      body.dark-mode .industrial-theme-toggle .icon-moon {
+        display: none;
+      }
+
+      @media (max-width: 1024px) {
+        .spec-cell {
+          padding: 11px 12px;
+          gap: 5px;
+          font-size: 0.62rem;
+          letter-spacing: 0.06em;
+        }
+      }
+
+      /* Mobile (<768px): Sleek single-row split strip above bottom safe area */
+      @media (max-width: 767px) {
+        .hero-bas-relief {
+          padding: calc(76px + 3svh) 0 calc(68px + 4svh);
+        }
+
+        .hero-bas-relief .bas-line {
+          font-size: 23.5vw;
+          line-height: 0.82;
+        }
+
+        .hero-contrast-halo {
+          background: radial-gradient(
+            ellipse 76% 24% at 50% 50%,
+            rgba(242, 242, 240, 0.92) 0%,
+            rgba(242, 242, 240, 0.68) 52%,
+            rgba(242, 242, 240, 0) 100%
+          );
+        }
+
+        body.dark-mode .hero-contrast-halo {
+          background: radial-gradient(
+            ellipse 76% 24% at 50% 50%,
+            rgba(15, 16, 15, 0.92) 0%,
+            rgba(15, 16, 15, 0.7) 52%,
+            rgba(15, 16, 15, 0) 100%
+          );
+        }
+
+        .hero-spec-bar {
+          left: 12px;
+          right: 62px; /* Clean clearance for bottom-right theme toggle */
+          bottom: max(14px, env(safe-area-inset-bottom));
+          grid-template-columns: 1fr 1.18fr 0.9fr;
+        }
+
+        .spec-cell {
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 2px;
+          padding: 7px 8px;
+          white-space: normal;
+        }
+
+        .spec-key {
+          font-size: 0.5rem;
+          letter-spacing: 0.08em;
+          line-height: 1;
+        }
+
+        .spec-sep {
+          display: none;
+        }
+
+        .spec-key::after {
+          content: " //";
+          color: var(--accent, #c81018);
+          font-weight: 800;
+        }
+
+        .spec-val {
+          font-size: clamp(0.52rem, 2.05vw, 0.62rem);
+          letter-spacing: 0.03em;
+          line-height: 1.15;
+        }
+
+        .industrial-theme-toggle {
+          right: 12px;
+          bottom: max(14px, env(safe-area-inset-bottom));
+          width: 40px;
+          height: 40px;
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -1911,6 +2303,38 @@
     <div id="main-view" class="page-view active">
       <!-- PERFECTLY CENTERED INTRO (Equilateral Triangle: 2 Top, 1 & 3 Bottom) -->
       <section id="intro-section">
+        <!-- ISOLATED HIGH-MASS 3D INDUSTRIAL STAGE (Background Layer Only) -->
+        <div class="hero-stage-bg" id="hero-stage-bg" aria-hidden="true">
+          <div class="hero-studio-floor"></div>
+
+          <div class="hero-bas-relief">
+            <span class="bas-line">PRECISION</span>
+            <span class="bas-line">MACHINING</span>
+          </div>
+
+          <canvas id="hero-cnc-canvas"></canvas>
+
+          <div class="hero-contrast-halo"></div>
+
+          <div class="hero-spec-bar">
+            <div class="spec-cell">
+              <span class="spec-key">FACILITY</span>
+              <span class="spec-sep">//</span>
+              <span class="spec-val">CNC • VMC • HMC</span>
+            </div>
+            <div class="spec-cell">
+              <span class="spec-key">TOLERANCE</span>
+              <span class="spec-sep">//</span>
+              <span class="spec-val">MICRON-GRADE ACCURACY</span>
+            </div>
+            <div class="spec-cell">
+              <span class="spec-key">QUALITY</span>
+              <span class="spec-sep">//</span>
+              <span class="spec-val">ISO CERTIFIED</span>
+            </div>
+          </div>
+        </div>
+
         <div class="image-container" id="img-container">
           <div class="img-wrapper img-1"><img src="2.png" alt="Image 2" /></div>
           <div class="img-wrapper img-2"><img src="1.png" alt="Image 1" /></div>
@@ -2592,7 +3016,46 @@
       </section>
     </div>
 
+    <!-- BOTTOM-RIGHT THEME TOGGLE -->
+    <button
+      id="theme-toggle-btn"
+      class="industrial-theme-toggle"
+      type="button"
+      aria-label="Toggle Light/Dark Theme"
+      title="Toggle Theme"
+    >
+      <svg class="icon-moon" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+
     <script>
+      // Theme Toggle Persistence & Sync
+      (function initThemeToggle() {
+        const savedTheme = localStorage.getItem("mp_theme");
+        if (savedTheme === "dark") {
+          document.body.classList.add("dark-mode");
+        }
+        const toggleBtn = document.getElementById("theme-toggle-btn");
+        if (toggleBtn) {
+          toggleBtn.addEventListener("click", () => {
+            const isDark = document.body.classList.toggle("dark-mode");
+            localStorage.setItem("mp_theme", isDark ? "dark" : "light");
+          });
+        }
+      })();
+
       // Mobile Hamburger Menu Logic
       function toggleMenu() {
         document.getElementById("navbar").classList.toggle("open");
@@ -2752,6 +3215,799 @@
           });
         });
       });
+    </script>
+
+    <!-- =================================================================
+         PROCEDURAL 3D CNC AEROSPACE TURBINE IMPELLER & HELICAL GEAR STAGE
+         Three.js WebGL Engine — Paused automatically via IntersectionObserver
+         ================================================================= -->
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+      (function initMarvelousCNCStage() {
+        const canvas = document.getElementById("hero-cnc-canvas");
+        const introSection = document.getElementById("intro-section");
+        const mainView = document.getElementById("main-view");
+        if (!canvas || !introSection) return;
+
+        let renderer;
+        try {
+          renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+            powerPreference: "high-performance",
+          });
+        } catch (err) {
+          return; // Graceful fallback to studio floor + bas-relief if WebGL unavailable
+        }
+
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.08;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        const scene = new THREE.Scene();
+
+        // Telephoto 34° studio lens eliminates wide-angle distortion and maximizes physical mass
+        const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+
+        // -----------------------------------------------------------------
+        // 1. PROCEDURAL ANISOTROPIC CNC LATHE & BRUSHED METAL MICRO-TEXTURE
+        // -----------------------------------------------------------------
+        function createBrushedMetalTexture() {
+          const size = 512;
+          const texCanvas = document.createElement("canvas");
+          texCanvas.width = size;
+          texCanvas.height = size;
+          const ctx = texCanvas.getContext("2d");
+
+          ctx.fillStyle = "#808080";
+          ctx.fillRect(0, 0, size, size);
+
+          const cx = size * 0.5;
+          const cy = size * 0.5;
+
+          // Concentric CNC lathe feed rings
+          for (let r = 6; r < size * 0.72; r += 1.6) {
+            const lum =
+              128 + Math.sin(r * 1.9) * 18 + (Math.random() - 0.5) * 16;
+            ctx.strokeStyle = `rgba(${lum | 0}, ${lum | 0}, ${lum | 0}, 0.42)`;
+            ctx.lineWidth = 1.1;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          // Subtle radial anisotropic brush grain
+          for (let i = 0; i < 360; i++) {
+            const angle = (i / 360) * Math.PI * 2;
+            const lum = 128 + (Math.random() - 0.5) * 28;
+            ctx.strokeStyle = `rgba(${lum | 0}, ${lum | 0}, ${lum | 0}, 0.12)`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(cx + Math.cos(angle) * 14, cy + Math.sin(angle) * 14);
+            ctx.lineTo(
+              cx + Math.cos(angle) * (size * 0.7),
+              cy + Math.sin(angle) * (size * 0.7),
+            );
+            ctx.stroke();
+          }
+
+          const texture = new THREE.CanvasTexture(texCanvas);
+          texture.wrapS = THREE.RepeatWrapping;
+          texture.wrapT = THREE.RepeatWrapping;
+          texture.anisotropy = Math.min(
+            renderer.capabilities.getMaxAnisotropy(),
+            8,
+          );
+          return texture;
+        }
+
+        // -----------------------------------------------------------------
+        // 2. PROCEDURAL STUDIO SOFTBOX ENVIRONMENT MAP (PMREM)
+        // -----------------------------------------------------------------
+        function buildStudioEnvironment(isDarkTheme) {
+          const pmrem = new THREE.PMREMGenerator(renderer);
+          pmrem.compileEquirectangularShader();
+
+          const envScene = new THREE.Scene();
+          envScene.background = new THREE.Color(
+            isDarkTheme ? 0x0b0c0e : 0xd5d7dc,
+          );
+
+          const addLightPanel = (colorHex, intensity, w, h, pos, target) => {
+            const mat = new THREE.MeshBasicMaterial({
+              color: new THREE.Color(colorHex).multiplyScalar(intensity),
+              side: THREE.DoubleSide,
+            });
+            const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+            mesh.position.set(pos[0], pos[1], pos[2]);
+            mesh.lookAt(target[0], target[1], target[2]);
+            envScene.add(mesh);
+          };
+
+          // Overhead main studio softbox
+          addLightPanel(
+            0xffffff,
+            isDarkTheme ? 3.4 : 2.8,
+            18,
+            10,
+            [0, 14, 4],
+            [0, 0, 0],
+          );
+          // Left warm tungsten key strip
+          addLightPanel(
+            0xffe6cc,
+            isDarkTheme ? 3.8 : 2.6,
+            10,
+            14,
+            [-14, 5, 8],
+            [0, 0, 0],
+          );
+          // Right cool steel rim strip
+          addLightPanel(
+            0xc8dcff,
+            isDarkTheme ? 4.2 : 2.7,
+            9,
+            16,
+            [14, 4, -6],
+            [0, 0, 0],
+          );
+          // Lower showroom bounce strip
+          addLightPanel(
+            isDarkTheme ? 0x2b3038 : 0xf4f4f0,
+            isDarkTheme ? 1.2 : 1.7,
+            22,
+            14,
+            [0, -12, 3],
+            [0, 0, 0],
+          );
+
+          const envRT = pmrem.fromScene(envScene, 0.035);
+          pmrem.dispose();
+          return envRT.texture;
+        }
+
+        const brushedTex = createBrushedMetalTexture();
+        const envLight = buildStudioEnvironment(false);
+        const envDark = buildStudioEnvironment(true);
+
+        // -----------------------------------------------------------------
+        // 3. PBR METALLURGICAL MATERIALS (DUAL-THEME SYNCED)
+        // -----------------------------------------------------------------
+        const matPrimary = new THREE.MeshStandardMaterial({
+          color: 0xd8dde2,
+          metalness: 0.92,
+          roughness: 0.22,
+          bumpMap: brushedTex,
+          bumpScale: 0.007,
+          roughnessMap: brushedTex,
+        });
+
+        const matChamfer = new THREE.MeshStandardMaterial({
+          color: 0xf1f4f8,
+          metalness: 0.95,
+          roughness: 0.14,
+          bumpMap: brushedTex,
+          bumpScale: 0.003,
+        });
+
+        const matStator = new THREE.MeshStandardMaterial({
+          color: 0x9aa1aa,
+          metalness: 0.9,
+          roughness: 0.28,
+          bumpMap: brushedTex,
+          bumpScale: 0.008,
+        });
+
+        const matHardware = new THREE.MeshStandardMaterial({
+          color: 0x4f555e,
+          metalness: 0.92,
+          roughness: 0.24,
+        });
+
+        // -----------------------------------------------------------------
+        // 4. PROCEDURAL CNC GEOMETRY BUILDERS
+        // -----------------------------------------------------------------
+        // Involute-profile precision gear ring with machined tooth chamfers
+        function createPrecisionGearGeometry(
+          innerR,
+          rootR,
+          tipR,
+          teethCount,
+          depth,
+          bevel,
+        ) {
+          const shape = new THREE.Shape();
+          const step = (Math.PI * 2) / teethCount;
+
+          for (let i = 0; i < teethCount; i++) {
+            const base = i * step;
+            const a0 = base;
+            const a1 = base + step * 0.17;
+            const a2 = base + step * 0.31;
+            const a3 = base + step * 0.53;
+            const a4 = base + step * 0.67;
+            const a5 = base + step * 0.84;
+
+            const p0x = Math.cos(a0) * rootR,
+              p0y = Math.sin(a0) * rootR;
+            if (i === 0) shape.moveTo(p0x, p0y);
+            else shape.lineTo(p0x, p0y);
+
+            shape.lineTo(Math.cos(a1) * rootR, Math.sin(a1) * rootR);
+            shape.lineTo(
+              Math.cos(a2) * ((rootR + tipR) * 0.52),
+              Math.sin(a2) * ((rootR + tipR) * 0.52),
+            );
+            shape.lineTo(
+              Math.cos(a2 + step * 0.04) * tipR,
+              Math.sin(a2 + step * 0.04) * tipR,
+            );
+            shape.lineTo(
+              Math.cos(a3 - step * 0.04) * tipR,
+              Math.sin(a3 - step * 0.04) * tipR,
+            );
+            shape.lineTo(
+              Math.cos(a4) * ((rootR + tipR) * 0.52),
+              Math.sin(a4) * ((rootR + tipR) * 0.52),
+            );
+            shape.lineTo(Math.cos(a5) * rootR, Math.sin(a5) * rootR);
+          }
+          shape.closePath();
+
+          const bore = new THREE.Path();
+          bore.absarc(0, 0, innerR, 0, Math.PI * 2, true);
+          shape.holes.push(bore);
+
+          const geo = new THREE.ExtrudeGeometry(shape, {
+            depth,
+            bevelEnabled: true,
+            bevelThickness: bevel,
+            bevelSize: bevel * 0.85,
+            bevelSegments: 2,
+            curveSegments: 1,
+          });
+          geo.translate(0, 0, -depth * 0.5);
+          geo.computeVertexNormals();
+          return geo;
+        }
+
+        // 5-Axis Swept Aerospace Centrifugal Impeller Blade (Watertight Manifold with Sharp Top Land)
+        function createImpellerBladeGeometry(
+          rStart,
+          rEnd,
+          sweepRad,
+          twistRad,
+          rootThick,
+          tipThick,
+        ) {
+          const uSegs = 22;
+          const vSegs = 7;
+          const positions = [];
+          const uvs = [];
+          const indices = [];
+
+          const hubZ = (u) => 0.58 * Math.pow(1 - u, 1.65) - 0.16;
+          const bladeH = (u) =>
+            THREE.MathUtils.lerp(0.62, 0.34, Math.pow(u, 0.75));
+
+          function evalSide(u, v, sideSign) {
+            const r = THREE.MathUtils.lerp(rStart, rEnd, u);
+            const zBase = hubZ(u);
+            const z = zBase + bladeH(u) * v;
+            const theta =
+              sweepRad * Math.pow(u, 1.32) + twistRad * v * (1 - 0.3 * u);
+            const halfT =
+              THREE.MathUtils.lerp(rootThick, tipThick, u) *
+              THREE.MathUtils.lerp(1.0, 0.72, v) *
+              0.5;
+            const dTheta = (sideSign * halfT) / r;
+            const ang = theta + dTheta;
+            return [Math.cos(ang) * r, Math.sin(ang) * r, z];
+          }
+
+          function addPatch(gridFn, rows, cols, flip) {
+            const baseIdx = positions.length / 3;
+            for (let i = 0; i <= rows; i++) {
+              const u = i / rows;
+              for (let j = 0; j <= cols; j++) {
+                const v = j / cols;
+                const p = gridFn(u, v);
+                positions.push(p[0], p[1], p[2]);
+                uvs.push(u, v);
+              }
+            }
+            const stride = cols + 1;
+            for (let i = 0; i < rows; i++) {
+              for (let j = 0; j < cols; j++) {
+                const a = baseIdx + i * stride + j;
+                const b = a + stride;
+                const c = b + 1;
+                const d = a + 1;
+                if (!flip) {
+                  indices.push(a, b, d, b, c, d);
+                } else {
+                  indices.push(a, d, b, b, d, c);
+                }
+              }
+            }
+          }
+
+          // Pressure & suction curved flanks
+          addPatch((u, v) => evalSide(u, v, 1), uSegs, vSegs, false);
+          addPatch((u, v) => evalSide(u, v, -1), uSegs, vSegs, true);
+          // 5-axis machined top shroud land (sharp specular edge)
+          addPatch(
+            (u, t) => evalSide(u, 1, THREE.MathUtils.lerp(-1, 1, t)),
+            uSegs,
+            1,
+            false,
+          );
+          // Leading & trailing machined edges
+          addPatch(
+            (t, v) => evalSide(0, v, THREE.MathUtils.lerp(1, -1, t)),
+            1,
+            vSegs,
+            false,
+          );
+          addPatch(
+            (t, v) => evalSide(1, v, THREE.MathUtils.lerp(-1, 1, t)),
+            1,
+            vSegs,
+            false,
+          );
+
+          const geo = new THREE.BufferGeometry();
+          geo.setAttribute(
+            "position",
+            new THREE.Float32BufferAttribute(positions, 3),
+          );
+          geo.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+          geo.setIndex(indices);
+          geo.computeVertexNormals();
+          return geo;
+        }
+
+        // -----------------------------------------------------------------
+        // 5. ASSEMBLE HIGH-MASS CNC CENTERPIECE
+        // -----------------------------------------------------------------
+        const stageRoot = new THREE.Group();
+        // Authoritative engineering tilt so blades, bore, and helical teeth read with maximum 3D depth
+        stageRoot.rotation.set(-0.52, 0.24, -0.14);
+        scene.add(stageRoot);
+
+        const rotorGroup = new THREE.Group();
+        const statorGroup = new THREE.Group();
+        stageRoot.add(rotorGroup);
+        stageRoot.add(statorGroup);
+
+        // A. Dual-Stage Helical-Offset Precision Ring Gear (56 Teeth)
+        const gearStageGeo = createPrecisionGearGeometry(
+          3.08,
+          3.56,
+          3.92,
+          56,
+          0.34,
+          0.038,
+        );
+        const gearFront = new THREE.Mesh(gearStageGeo, matPrimary);
+        gearFront.position.z = 0.21;
+        rotorGroup.add(gearFront);
+
+        const gearRear = new THREE.Mesh(gearStageGeo, matPrimary);
+        gearRear.position.z = -0.21;
+        gearRear.rotation.z = (Math.PI / 56) * 0.55; // Stepped helical phase offset
+        rotorGroup.add(gearRear);
+
+        // Central machined undercut collar between gear stages
+        const undercutGeo = new THREE.CylinderGeometry(3.48, 3.48, 0.12, 72);
+        undercutGeo.rotateX(Math.PI * 0.5);
+        rotorGroup.add(new THREE.Mesh(undercutGeo, matHardware));
+
+        // B. CNC-Turned Stepped Retaining Shoulder & Chamfer Bezel
+        const flangePts = [
+          new THREE.Vector2(2.96, -0.42),
+          new THREE.Vector2(3.52, -0.42),
+          new THREE.Vector2(3.56, -0.36),
+          new THREE.Vector2(3.56, 0.42),
+          new THREE.Vector2(3.46, 0.5),
+          new THREE.Vector2(3.12, 0.5),
+          new THREE.Vector2(3.04, 0.42),
+          new THREE.Vector2(3.04, -0.34),
+        ];
+        const flangeGeo = new THREE.LatheGeometry(flangePts, 96);
+        flangeGeo.rotateX(Math.PI * 0.5);
+        rotorGroup.add(new THREE.Mesh(flangeGeo, matChamfer));
+
+        // 18 Socket-Head Cap Screws on Outer Flange Pitch Circle
+        const boltBodyGeo = new THREE.CylinderGeometry(0.068, 0.068, 0.09, 18);
+        boltBodyGeo.rotateX(Math.PI * 0.5);
+        const boltHexGeo = new THREE.CylinderGeometry(0.038, 0.038, 0.095, 6);
+        boltHexGeo.rotateX(Math.PI * 0.5);
+
+        for (let i = 0; i < 18; i++) {
+          const ang = (i / 18) * Math.PI * 2;
+          const bx = Math.cos(ang) * 3.29;
+          const by = Math.sin(ang) * 3.29;
+
+          const bolt = new THREE.Mesh(boltBodyGeo, matHardware);
+          bolt.position.set(bx, by, 0.49);
+          rotorGroup.add(bolt);
+
+          const hex = new THREE.Mesh(boltHexGeo, matStator);
+          hex.position.set(bx, by, 0.5);
+          rotorGroup.add(hex);
+        }
+
+        // C. Conical Lathe-Turned Aerospace Impeller Hub & Backplate
+        const hubPts = [
+          new THREE.Vector2(0.56, -0.36),
+          new THREE.Vector2(3.08, -0.36),
+          new THREE.Vector2(3.08, -0.16),
+          new THREE.Vector2(2.6, -0.11),
+          new THREE.Vector2(2.05, 0.01),
+          new THREE.Vector2(1.55, 0.2),
+          new THREE.Vector2(1.12, 0.46),
+          new THREE.Vector2(0.98, 0.62),
+          new THREE.Vector2(0.92, 0.68),
+          new THREE.Vector2(0.56, 0.68),
+        ];
+        const hubGeo = new THREE.LatheGeometry(hubPts, 96);
+        hubGeo.rotateX(Math.PI * 0.5);
+        rotorGroup.add(new THREE.Mesh(hubGeo, matPrimary));
+
+        // D. 24 Milled 5-Axis Impeller Blades (12 Primary + 12 Splitter Blades)
+        const mainBladeGeo = createImpellerBladeGeometry(
+          0.98,
+          3.03,
+          -0.78,
+          0.26,
+          0.082,
+          0.038,
+        );
+        const splitterBladeGeo = createImpellerBladeGeometry(
+          1.72,
+          3.03,
+          -0.52,
+          0.2,
+          0.068,
+          0.034,
+        );
+
+        const bladeCount = 12;
+        for (let i = 0; i < bladeCount; i++) {
+          const baseAng = (i / bladeCount) * Math.PI * 2;
+
+          const mainBlade = new THREE.Mesh(mainBladeGeo, matChamfer);
+          mainBlade.rotation.z = baseAng;
+          rotorGroup.add(mainBlade);
+
+          const splitter = new THREE.Mesh(splitterBladeGeo, matPrimary);
+          splitter.rotation.z = baseAng + Math.PI / bladeCount;
+          rotorGroup.add(splitter);
+        }
+
+        // E. Central H7 Precision Spindle Nose, Chamfered Bore & Locking Collar
+        const nosePts = [
+          new THREE.Vector2(0.48, -0.38),
+          new THREE.Vector2(0.58, -0.38),
+          new THREE.Vector2(0.58, 0.86),
+          new THREE.Vector2(0.64, 0.92),
+          new THREE.Vector2(0.88, 0.92),
+          new THREE.Vector2(0.95, 0.85),
+          new THREE.Vector2(0.95, 0.66),
+          new THREE.Vector2(0.48, 0.66),
+        ];
+        const noseGeo = new THREE.LatheGeometry(nosePts, 72);
+        noseGeo.rotateX(Math.PI * 0.5);
+        rotorGroup.add(new THREE.Mesh(noseGeo, matChamfer));
+
+        // Dark Precision Inner Spindle Bore Sleeve
+        const boreSleeveGeo = new THREE.CylinderGeometry(
+          0.475,
+          0.475,
+          1.26,
+          48,
+          1,
+          true,
+        );
+        boreSleeveGeo.rotateX(Math.PI * 0.5);
+        boreSleeveGeo.translate(0, 0, 0.25);
+        const matBoreInterior = new THREE.MeshStandardMaterial({
+          color: 0x181a1d,
+          metalness: 0.85,
+          roughness: 0.4,
+          side: THREE.BackSide,
+        });
+        rotorGroup.add(new THREE.Mesh(boreSleeveGeo, matBoreInterior));
+
+        // 8 Spindle Nose Cap Screws
+        for (let i = 0; i < 8; i++) {
+          const ang = (i / 8) * Math.PI * 2;
+          const screw = new THREE.Mesh(boltBodyGeo, matHardware);
+          screw.scale.setScalar(0.76);
+          screw.position.set(Math.cos(ang) * 0.77, Math.sin(ang) * 0.77, 0.91);
+          rotorGroup.add(screw);
+        }
+
+        // F. Outer Precision Metrology Stator Shroud & Vernier Index Ticks
+        const statorPts = [
+          new THREE.Vector2(4.06, -0.34),
+          new THREE.Vector2(4.36, -0.34),
+          new THREE.Vector2(4.42, -0.26),
+          new THREE.Vector2(4.42, 0.08),
+          new THREE.Vector2(4.34, 0.16),
+          new THREE.Vector2(4.1, 0.16),
+          new THREE.Vector2(4.06, 0.1),
+        ];
+        const statorRingGeo = new THREE.LatheGeometry(statorPts, 120);
+        statorRingGeo.rotateX(Math.PI * 0.5);
+        statorGroup.add(new THREE.Mesh(statorRingGeo, matStator));
+
+        // 72 CNC-Engraved Vernier Calibration Ticks around Stator Bezel
+        const tickMajorGeo = new THREE.BoxGeometry(0.18, 0.024, 0.03);
+        const tickMinorGeo = new THREE.BoxGeometry(0.1, 0.016, 0.025);
+        for (let i = 0; i < 72; i++) {
+          const ang = (i / 72) * Math.PI * 2;
+          const isMajor = i % 6 === 0;
+          const tick = new THREE.Mesh(
+            isMajor ? tickMajorGeo : tickMinorGeo,
+            matChamfer,
+          );
+          const rTick = isMajor ? 4.22 : 4.25;
+          tick.position.set(
+            Math.cos(ang) * rTick,
+            Math.sin(ang) * rTick,
+            0.165,
+          );
+          tick.rotation.z = ang;
+          statorGroup.add(tick);
+        }
+
+        // -----------------------------------------------------------------
+        // 6. 3-POINT STUDIO RIM LIGHTING RIG
+        // -----------------------------------------------------------------
+        // 1. Warm Tungsten Key Light (Upper-Left-Front)
+        const keyLight = new THREE.DirectionalLight(0xfff0dd, 2.6);
+        keyLight.position.set(-7.5, 6.5, 8.5);
+        scene.add(keyLight);
+
+        // 2. Cool Steel Rim Light (Back-Right Edge Specular Carve)
+        const rimLight = new THREE.DirectionalLight(0xcfe2ff, 3.1);
+        rimLight.position.set(8.5, -4.5, -5.5);
+        scene.add(rimLight);
+
+        // 3. Soft Overhead Studio Fill
+        const topFillLight = new THREE.DirectionalLight(0xffffff, 1.35);
+        topFillLight.position.set(0.5, 9.5, 3.0);
+        scene.add(topFillLight);
+
+        // Ambient Studio Hemisphere Bounce
+        const hemiLight = new THREE.HemisphereLight(0xf6f7f9, 0x2c3036, 0.75);
+        scene.add(hemiLight);
+
+        // -----------------------------------------------------------------
+        // 7. LIVE LIGHT / DARK THEME MATERIAL & LIGHTING SYNC
+        // -----------------------------------------------------------------
+        function syncThemeMaterials() {
+          const isDark = document.body.classList.contains("dark-mode");
+          scene.environment = isDark ? envDark : envLight;
+
+          if (isDark) {
+            // Deep Gunmetal Brushed Steel with High-Contrast Rim Highlights
+            matPrimary.color.setHex(0x6b727c);
+            matPrimary.metalness = 0.94;
+            matPrimary.roughness = 0.21;
+            matPrimary.envMapIntensity = 1.65;
+
+            matChamfer.color.setHex(0x9ca5b2);
+            matChamfer.metalness = 0.96;
+            matChamfer.roughness = 0.13;
+            matChamfer.envMapIntensity = 1.9;
+
+            matStator.color.setHex(0x363a42);
+            matStator.metalness = 0.92;
+            matStator.roughness = 0.27;
+            matStator.envMapIntensity = 1.45;
+
+            matHardware.color.setHex(0x202328);
+            matHardware.envMapIntensity = 1.35;
+
+            keyLight.intensity = 2.9;
+            rimLight.intensity = 3.8;
+            topFillLight.intensity = 1.25;
+            hemiLight.intensity = 0.45;
+            renderer.toneMappingExposure = 1.12;
+          } else {
+            // Silver Bead-Blasted Titanium
+            matPrimary.color.setHex(0xd6dbe0);
+            matPrimary.metalness = 0.91;
+            matPrimary.roughness = 0.23;
+            matPrimary.envMapIntensity = 1.32;
+
+            matChamfer.color.setHex(0xf0f3f7);
+            matChamfer.metalness = 0.95;
+            matChamfer.roughness = 0.15;
+            matChamfer.envMapIntensity = 1.5;
+
+            matStator.color.setHex(0x9ea5ae);
+            matStator.metalness = 0.89;
+            matStator.roughness = 0.29;
+            matStator.envMapIntensity = 1.18;
+
+            matHardware.color.setHex(0x585e68);
+            matHardware.envMapIntensity = 1.2;
+
+            keyLight.intensity = 2.35;
+            rimLight.intensity = 2.75;
+            topFillLight.intensity = 1.45;
+            hemiLight.intensity = 0.85;
+            renderer.toneMappingExposure = 1.04;
+          }
+        }
+
+        syncThemeMaterials();
+
+        // -----------------------------------------------------------------
+        // 8. RESPONSIVE VIEWPORT FRAMING (65–75% STAGE COVERAGE)
+        // -----------------------------------------------------------------
+        const ASSEMBLY_DIAMETER = 8.84;
+
+        function handleResize() {
+          const width = introSection.clientWidth || window.innerWidth;
+          const height = introSection.clientHeight || window.innerHeight;
+          if (!width || !height) return;
+
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height, false);
+
+          const vFovRad = THREE.MathUtils.degToRad(camera.fov * 0.5);
+          let visibleHeight;
+
+          if (camera.aspect >= 1.0) {
+            // Desktop / Landscape: Fill ~72% of viewport height behind lockup
+            visibleHeight = ASSEMBLY_DIAMETER / 0.72;
+          } else {
+            // Mobile / Portrait: Fill ~86% of viewport width (~65-72% visual stage)
+            const visibleWidth = ASSEMBLY_DIAMETER / 0.86;
+            visibleHeight = Math.max(
+              visibleWidth / camera.aspect,
+              ASSEMBLY_DIAMETER / 0.68,
+            );
+          }
+
+          camera.position.set(0, 0, (visibleHeight * 0.5) / Math.tan(vFovRad));
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize, { passive: true });
+
+        // -----------------------------------------------------------------
+        // 9. DAMPED PARALLAX & INTERSECTION-OBSERVER RENDER LIFECYCLE
+        // -----------------------------------------------------------------
+        const pointerTarget = { x: 0, y: 0 };
+        const pointerCurrent = { x: 0, y: 0 };
+        const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+        const reducedMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+
+        window.addEventListener(
+          "mousemove",
+          (e) => {
+            if (isCoarsePointer) return;
+            pointerTarget.x = (e.clientX / window.innerWidth - 0.5) * 2;
+            pointerTarget.y = (e.clientY / window.innerHeight - 0.5) * 2;
+          },
+          { passive: true },
+        );
+
+        let isHeroIntersecting = true;
+        let rafId = null;
+        let lastTime = performance.now();
+        let elapsedMobile = 0;
+
+        function shouldRenderLoopRun() {
+          const isMainActive = mainView
+            ? mainView.classList.contains("active")
+            : true;
+          return (
+            isHeroIntersecting &&
+            isMainActive &&
+            !document.hidden &&
+            !reducedMotionQuery.matches
+          );
+        }
+
+        function renderSingleFrame() {
+          renderer.render(scene, camera);
+        }
+
+        function animate(now) {
+          if (!shouldRenderLoopRun()) {
+            rafId = null;
+            return;
+          }
+
+          rafId = requestAnimationFrame(animate);
+
+          const dt = Math.min((now - lastTime) * 0.001, 0.05);
+          lastTime = now;
+
+          // Heavy, deliberate industrial angular velocity (0.08 rad/s)
+          rotorGroup.rotation.z += 0.08 * dt;
+          // Subtle counter-indexing vernier stator collar
+          statorGroup.rotation.z -= 0.018 * dt;
+
+          if (isCoarsePointer) {
+            elapsedMobile += dt;
+            pointerTarget.x = Math.sin(elapsedMobile * 0.55) * 0.35;
+            pointerTarget.y = Math.cos(elapsedMobile * 0.42) * 0.28;
+          }
+
+          // Smooth damped lerp parallax
+          pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.045;
+          pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.045;
+
+          stageRoot.rotation.x = -0.52 + pointerCurrent.y * 0.11;
+          stageRoot.rotation.y = 0.24 + pointerCurrent.x * 0.14;
+
+          renderer.render(scene, camera);
+        }
+
+        function updateLoopState() {
+          if (shouldRenderLoopRun()) {
+            if (rafId === null) {
+              lastTime = performance.now();
+              rafId = requestAnimationFrame(animate);
+            }
+          } else {
+            if (rafId !== null) {
+              cancelAnimationFrame(rafId);
+              rafId = null;
+            }
+            renderSingleFrame();
+          }
+        }
+
+        // Pause WebGL immediately when #intro-section scrolls off-screen
+        const heroObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              isHeroIntersecting = entry.isIntersecting;
+            });
+            updateLoopState();
+          },
+          { threshold: 0.02 },
+        );
+        heroObserver.observe(introSection);
+
+        // Pause when navigating to dedicated views (Machines / Equipments / Products)
+        if (mainView) {
+          new MutationObserver(() => {
+            handleResize();
+            updateLoopState();
+          }).observe(mainView, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+        }
+
+        // Sync Three.js PBR tones immediately when body.dark-mode toggles
+        new MutationObserver(() => {
+          syncThemeMaterials();
+          if (!rafId) renderSingleFrame();
+        }).observe(document.body, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
+
+        document.addEventListener("visibilitychange", updateLoopState);
+        updateLoopState();
+      })();
     </script>
   </body>
 </html>
