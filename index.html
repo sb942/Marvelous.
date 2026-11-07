@@ -2002,12 +2002,12 @@
       }
 
       .brand-title--sonical {
-        color: #605656;
-        font-family: "Montserrat", sans-serif;
-        font-size: clamp(2rem, 4.5vw, 3.9rem);
-        font-weight: 900;
-        line-height: 0.98;
-        letter-spacing: -0.065em;
+        color: #5c4f4f;
+        font-family: "Inter", Arial, sans-serif;
+        font-size: clamp(1.8rem, 3.35vw, 2.9rem);
+        font-weight: 700;
+        line-height: 1.04;
+        letter-spacing: -0.035em;
       }
 
       .brand-title--cutting {
@@ -2057,7 +2057,9 @@
         }
 
         .brand-title--sonical {
-          font-size: clamp(1.65rem, 4.8vw, 3rem);
+          font-size: clamp(1.55rem, 3.8vw, 2.65rem);
+          font-weight: 700;
+          letter-spacing: -0.035em;
         }
 
         .brand-title--cutting {
@@ -2102,9 +2104,12 @@
         }
 
         .brand-title--sonical {
-          font-size: clamp(1.18rem, 5.25vw, 1.62rem);
-          line-height: 1.03;
-          letter-spacing: -0.06em;
+          color: #5c4f4f;
+          font-family: "Inter", Arial, sans-serif;
+          font-size: clamp(1.08rem, 4.8vw, 1.48rem);
+          font-weight: 700;
+          line-height: 1.05;
+          letter-spacing: -0.035em;
         }
 
         .brand-title--cutting {
@@ -2154,7 +2159,8 @@
         }
 
         .brand-title--sonical {
-          font-size: 1.12rem;
+          font-size: 1.02rem;
+          font-weight: 700;
         }
 
         .brand-title--cutting {
@@ -2206,9 +2212,11 @@
 
       @media (max-width: 640px) {
         .brand-title--marvelous {
-          font-size: clamp(0.9rem, 4.1vw, 1.22rem);
+          /* Keep the complete company name on a single line on phones. */
+          white-space: nowrap;
+          font-size: clamp(0.68rem, 3vw, 0.9rem);
           line-height: 1.12;
-          letter-spacing: 0;
+          letter-spacing: -0.015em;
         }
 
         .brand-row--marvelous .brand-subtitle {
@@ -2219,8 +2227,20 @@
       }
 
       @media (max-width: 370px) {
+        .brand-row--marvelous .brand-mark {
+          flex-basis: 56px;
+          width: 56px;
+          height: 58px;
+        }
+
+        .brand-row--marvelous {
+          gap: 8px;
+        }
+
         .brand-title--marvelous {
-          font-size: 0.86rem;
+          white-space: nowrap;
+          font-size: clamp(0.58rem, 3vw, 0.68rem);
+          letter-spacing: -0.02em;
         }
 
         .brand-row--marvelous .brand-subtitle {
@@ -3128,74 +3148,198 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         // Red loading screen, white expanding reveal, then the three GSAP brand entrances.
+        let introStarted = false;
         const startBrandIntro = () => {
+          if (introStarted) return;
+          introStarted = true;
+
           const preloader = document.getElementById("preloader");
           const progressLabel = document.getElementById("load-progress");
           const preloaderLabel = document.querySelector(".preloader-label");
           const preloaderCounter = document.querySelector(".preloader-counter");
           const wipe = document.querySelector(".preloader-wipe");
-          const rows = window.gsap
-            ? window.gsap.utils.toArray(".brand-row")
-            : [];
+          const rows = Array.from(document.querySelectorAll(".brand-row"));
           const reduceMotion = window.matchMedia(
             "(prefers-reduced-motion: reduce)",
           ).matches;
+          const gsapLib = window.gsap;
+          const scrollTriggerPlugin = window.ScrollTrigger;
 
-          // Scroll-linked exit choreography. Scrolling down sends each row back
-          // toward the side it originally entered from; scrolling up reverses it.
-          const setupBrandScrollReverse = () => {
-            if (reduceMotion || !window.ScrollTrigger || !rows.length) return;
-
-            gsap.registerPlugin(ScrollTrigger);
-
-            const scrollOut = gsap.timeline({
-              scrollTrigger: {
-                trigger: "#intro-section",
-                start: "top top",
-                end: "bottom top",
-                scrub: 0.85,
-                invalidateOnRefresh: true,
-              },
-            });
-
+          const revealRowsWithoutGsap = () => {
             rows.forEach((row, index) => {
-              const direction = index === 1 ? 1 : -1;
-              scrollOut.to(
-                row,
+              const fromRight = index === 1;
+              row.style.opacity = "0";
+              row.style.transform = `translate3d(${fromRight ? 70 : -70}px, 0, 0)`;
+              row.style.filter = "blur(10px)";
+              if (reduceMotion || !row.animate) {
+                row.style.opacity = "1";
+                row.style.transform = "none";
+                row.style.filter = "none";
+                return;
+              }
+              row.animate(
+                [
+                  {
+                    opacity: 0,
+                    transform: `translate3d(${fromRight ? 70 : -70}px, 0, 0)`,
+                    filter: "blur(10px)",
+                  },
+                  {
+                    opacity: 1,
+                    transform: "translate3d(0, 0, 0)",
+                    filter: "blur(0px)",
+                  },
+                ],
                 {
-                  xPercent: direction * 125,
-                  y: -28,
-                  autoAlpha: 0,
-                  filter: "blur(9px)",
-                  duration: 1,
-                  ease: "none",
+                  duration: 950,
+                  delay: index * 180,
+                  easing: "cubic-bezier(.16,1,.3,1)",
+                  fill: "forwards",
                 },
-                index * 0.12,
               );
             });
           };
 
-          if (!preloader) {
-            document.body.classList.remove("is-loading");
+          const setupFallbackReverseScroll = () => {
+            const intro = document.getElementById("intro-section");
+            if (!intro || !rows.length || reduceMotion) return;
+            let ticking = false;
+            const update = () => {
+              const rect = intro.getBoundingClientRect();
+              const distance = Math.max(1, intro.offsetHeight);
+              const progress = Math.max(0, Math.min(1, -rect.top / distance));
+              rows.forEach((row, index) => {
+                const direction = index === 1 ? 1 : -1;
+                const stagger = Math.max(
+                  0,
+                  Math.min(1, (progress - index * 0.08) / 0.92),
+                );
+                row.style.transform = `translate3d(${direction * stagger * 125}vw, ${-stagger * 28}px, 0)`;
+                row.style.opacity = String(1 - stagger);
+                row.style.filter = `blur(${stagger * 9}px)`;
+              });
+              ticking = false;
+            };
+            window.addEventListener(
+              "scroll",
+              () => {
+                if (!ticking) {
+                  ticking = true;
+                  window.requestAnimationFrame(update);
+                }
+              },
+              { passive: true },
+            );
+            update();
+          };
+
+          const finishWithoutGsap = () => {
+            if (!preloader) {
+              document.body.classList.remove("is-loading");
+              revealRowsWithoutGsap();
+              setupFallbackReverseScroll();
+              return;
+            }
+            const counter = { value: 0 };
+            const duration = reduceMotion ? 80 : 1100;
+            const startedAt = performance.now();
+            const tick = (now) => {
+              const progress = Math.min(1, (now - startedAt) / duration);
+              counter.value = Math.round(progress * 100);
+              if (progressLabel)
+                progressLabel.textContent = String(counter.value).padStart(
+                  2,
+                  "0",
+                );
+              if (progress < 1) {
+                requestAnimationFrame(tick);
+                return;
+              }
+              if (wipe && wipe.animate && !reduceMotion) {
+                wipe.style.opacity = "1";
+                wipe.animate(
+                  [
+                    { width: "220px", height: "12px" },
+                    { width: "120vw", height: "120vh" },
+                  ],
+                  {
+                    duration: 650,
+                    easing: "cubic-bezier(.7,0,.2,1)",
+                    fill: "forwards",
+                  },
+                ).onfinish = () => {
+                  preloader.remove();
+                  document.body.classList.remove("is-loading");
+                  revealRowsWithoutGsap();
+                  setupFallbackReverseScroll();
+                };
+              } else {
+                preloader.remove();
+                document.body.classList.remove("is-loading");
+                revealRowsWithoutGsap();
+                setupFallbackReverseScroll();
+              }
+            };
+            requestAnimationFrame(tick);
+          };
+
+          if (!preloader || !gsapLib) {
+            finishWithoutGsap();
             return;
           }
 
-          // Keep the page usable even if the animation library cannot be reached.
-          if (!window.gsap) {
-            preloader.remove();
-            document.body.classList.remove("is-loading");
-            return;
-          }
+          const gsap = gsapLib;
+          const setupBrandScrollReverse = () => {
+            if (reduceMotion || !scrollTriggerPlugin || !rows.length) {
+              setupFallbackReverseScroll();
+              return;
+            }
+            try {
+              gsap.registerPlugin(scrollTriggerPlugin);
+              const scrollOut = gsap.timeline({
+                scrollTrigger: {
+                  trigger: "#intro-section",
+                  start: "top top",
+                  end: "bottom top",
+                  scrub: 0.85,
+                  invalidateOnRefresh: true,
+                },
+              });
+              rows.forEach((row, index) => {
+                const direction = index === 1 ? 1 : -1;
+                scrollOut.to(
+                  row,
+                  {
+                    xPercent: direction * 125,
+                    y: -28,
+                    autoAlpha: 0,
+                    filter: "blur(9px)",
+                    duration: 1,
+                    ease: "none",
+                  },
+                  index * 0.12,
+                );
+              });
+            } catch (error) {
+              console.warn(
+                "Scroll animation unavailable; using fallback.",
+                error,
+              );
+              setupFallbackReverseScroll();
+            }
+          };
 
           const progress = { value: 0 };
           gsap.to(progress, {
             value: 100,
-            duration: reduceMotion ? 0.35 : 1.95,
+            duration: reduceMotion ? 0.2 : 1.65,
             ease: "power2.out",
             onUpdate: () => {
-              const value = Math.round(progress.value);
-              progressLabel.textContent =
-                value === 100 ? "100" : String(value).padStart(2, "0");
+              if (progressLabel) {
+                const value = Math.round(progress.value);
+                progressLabel.textContent =
+                  value === 100 ? "100" : String(value).padStart(2, "0");
+              }
             },
             onComplete: () => {
               const reveal = gsap.timeline({
@@ -3205,36 +3349,32 @@
                   setupBrandScrollReverse();
                 },
               });
-
-              reveal.to([preloaderLabel, preloaderCounter], {
+              reveal.to([preloaderLabel, preloaderCounter].filter(Boolean), {
                 autoAlpha: 0,
                 y: -20,
-                duration: reduceMotion ? 0.08 : 0.24,
+                duration: reduceMotion ? 0.05 : 0.2,
                 ease: "power2.in",
               });
-
-              // The small white rectangle rapidly grows beyond the viewport.
-              reveal.fromTo(
-                wipe,
-                { autoAlpha: 1, width: "220px", height: "12px" },
-                {
-                  autoAlpha: 1,
-                  width: "120vw",
-                  height: "120vh",
-                  duration: reduceMotion ? 0.18 : 0.82,
-                  ease: "expo.inOut",
-                },
-                reduceMotion ? "-=0.02" : "-=0.02",
-              );
-
+              if (wipe) {
+                reveal.fromTo(
+                  wipe,
+                  { autoAlpha: 1, width: "220px", height: "12px" },
+                  {
+                    autoAlpha: 1,
+                    width: "120vw",
+                    height: "120vh",
+                    duration: reduceMotion ? 0.1 : 0.72,
+                    ease: "expo.inOut",
+                  },
+                  "-=0.02",
+                );
+              }
               reveal.set(preloader, { backgroundColor: "#f2f2f0" });
               reveal.to(preloader, {
                 autoAlpha: 0,
-                duration: reduceMotion ? 0.05 : 0.14,
+                duration: reduceMotion ? 0.03 : 0.12,
               });
               reveal.set(preloader, { display: "none" });
-
-              // Row 1 and 3 enter from the left; row 2 enters from the right.
               rows.forEach((row, index) => {
                 const fromRight = index === 1;
                 reveal.fromTo(
@@ -3248,31 +3388,35 @@
                     x: 0,
                     autoAlpha: 1,
                     filter: "blur(0px)",
-                    duration: reduceMotion ? 0.38 : 1.12,
+                    duration: reduceMotion ? 0.2 : 1.05,
                     ease: "expo.out",
                     clearProps: "transform,filter,willChange",
                   },
-                  index === 0 ? undefined : "-=0.72",
+                  index === 0 ? undefined : "-=0.68",
                 );
               });
             },
+            onInterrupt: finishWithoutGsap,
           });
         };
 
         // Wait for the page assets and web fonts before starting the percentage counter.
         const beginIntroWhenReady = () => {
-          if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(startBrandIntro);
-          } else {
+          // Never let a slow font request or a missing image keep the page locked.
+          let started = false;
+          const startOnce = () => {
+            if (started) return;
+            started = true;
             startBrandIntro();
+          };
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(startOnce).catch(startOnce);
+            window.setTimeout(startOnce, 1800);
+          } else {
+            startOnce();
           }
         };
-
-        if (document.readyState === "complete") {
-          beginIntroWhenReady();
-        } else {
-          window.addEventListener("load", beginIntroWhenReady, { once: true });
-        }
+        beginIntroWhenReady();
 
         // Header Scrolled State
         let ticking = false;
