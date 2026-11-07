@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marvelous Precision Pvt. Ltd.</title>
+    <link rel="icon" type="image/png" href="1.png" />
+    <link rel="apple-touch-icon" href="1.png" />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Michroma&family=Montserrat:wght@600;700;800;900&display=swap"
@@ -2211,18 +2213,50 @@
       }
 
       @media (max-width: 640px) {
+        /* Tighten the first lockup vertically so it does not leave a large
+           pocket of empty space before the next brand row on phones. */
+        .brand-row--marvelous {
+          min-height: 96px;
+          padding-top: 7px;
+          padding-bottom: 7px;
+          align-items: center;
+        }
+
         .brand-title--marvelous {
           /* Keep the complete company name on a single line on phones. */
           white-space: nowrap;
           font-size: clamp(0.68rem, 3vw, 0.9rem);
-          line-height: 1.12;
+          line-height: 1.05;
           letter-spacing: -0.015em;
         }
 
         .brand-row--marvelous .brand-subtitle {
-          margin-top: 7px;
+          margin-top: 3px;
           font-size: clamp(0.61rem, 2.45vw, 0.76rem);
-          line-height: 1.4;
+          line-height: 1.2;
+        }
+      }
+
+      /* Give the first brand lockup a wider, balanced runway on desktop. */
+      @media (min-width: 951px) {
+        .brand-stage {
+          width: min(1440px, calc(100% - clamp(56px, 7vw, 112px)));
+        }
+
+        .brand-row--marvelous {
+          gap: clamp(24px, 3vw, 44px);
+          padding-right: clamp(10px, 1.2vw, 18px);
+        }
+
+        .brand-row--marvelous .brand-copy {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+
+        .brand-title--marvelous {
+          font-size: clamp(1.7rem, 3.35vw, 3rem);
+          letter-spacing: -0.012em;
+          white-space: nowrap;
         }
       }
 
