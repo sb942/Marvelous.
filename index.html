@@ -3318,266 +3318,510 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script>
-            // Mobile navigation: explicit open/close state and tap-to-expand submenus.
-            function toggleMenu() {
-              const navbar = document.getElementById("navbar");
-              if (!navbar) return;
-              const isOpen = navbar.classList.toggle("open");
-              const trigger = document.querySelector(".menu-icon");
-              if (trigger) {
-                trigger.setAttribute("aria-expanded", String(isOpen));
-                trigger.setAttribute(
-                  "aria-label",
-                  isOpen ? "Close navigation" : "Open navigation",
+      // Mobile navigation: explicit open/close state and tap-to-expand submenus.
+      function toggleMenu() {
+        const navbar = document.getElementById("navbar");
+        if (!navbar) return;
+        const isOpen = navbar.classList.toggle("open");
+        const trigger = document.querySelector(".menu-icon");
+        if (trigger) {
+          trigger.setAttribute("aria-expanded", String(isOpen));
+          trigger.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation" : "Open navigation",
+          );
+        }
+        if (!isOpen)
+          navbar
+            .querySelectorAll(".dropdown.expanded")
+            .forEach((item) => item.classList.remove("expanded"));
+      }
+
+      function setupMobileDropdowns() {
+        const navbar = document.getElementById("navbar");
+        if (!navbar) return;
+        navbar
+          .querySelectorAll(":scope > .nav-links > li.dropdown")
+          .forEach((dropdown) => {
+            const trigger = dropdown.querySelector(":scope > a");
+            if (!trigger) return;
+            // Remove the desktop navigation action on the parent item on touch layouts.
+            trigger.removeAttribute("onclick");
+            trigger.setAttribute("aria-haspopup", "true");
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.addEventListener("click", (event) => {
+              if (!window.matchMedia("(max-width: 950px)").matches) return;
+              event.preventDefault();
+              event.stopPropagation();
+              const willExpand = !dropdown.classList.contains("expanded");
+              navbar
+                .querySelectorAll(":scope > .nav-links > li.dropdown.expanded")
+                .forEach((item) => {
+                  item.classList.remove("expanded");
+                  const link = item.querySelector(":scope > a");
+                  if (link) link.setAttribute("aria-expanded", "false");
+                });
+              dropdown.classList.toggle("expanded", willExpand);
+              trigger.setAttribute("aria-expanded", String(willExpand));
+            });
+          });
+
+        document.addEventListener("click", (event) => {
+          if (!window.matchMedia("(max-width: 950px)").matches) return;
+          if (
+            !navbar.contains(event.target) &&
+            !event.target.closest(".menu-icon")
+          ) {
+            navbar.classList.remove("open");
+            navbar
+              .querySelectorAll(".dropdown.expanded")
+              .forEach((item) => item.classList.remove("expanded"));
+            const menuTrigger = document.querySelector(".menu-icon");
+            if (menuTrigger) menuTrigger.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      // View Router & Smooth Scrolling
+      function navigateTo(viewId, targetId, slideIndex = null) {
+        const mobileNav = document.getElementById("navbar");
+        if (mobileNav && mobileNav.classList.contains("open")) {
+          mobileNav.classList.remove("open");
+        }
+
+        document.querySelectorAll(".page-view").forEach((view) => {
+          view.classList.remove("active");
+        });
+        document.getElementById(viewId).classList.add("active");
+
+        if (slideIndex !== null && viewId === "main-view") {
+          goToSlide(slideIndex);
+        }
+
+        setTimeout(() => {
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+              const headerOffset = 70;
+              const elementPosition = target.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            }
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }, 30);
+      }
+
+      // Instagram-Style Native Slider Logic
+      const sliderTrack = document.getElementById("slider-track");
+      const dots = document.querySelectorAll(".dot");
+      const slides = document.querySelectorAll(".slide");
+      let slideInterval;
+      let currentSlide = 0;
+
+      function updateDots() {
+        if (!sliderTrack) return;
+        const slideWidth = sliderTrack.clientWidth;
+        currentSlide = Math.round(sliderTrack.scrollLeft / slideWidth);
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentSlide);
+        });
+      }
+
+      if (sliderTrack) {
+        sliderTrack.addEventListener(
+          "scroll",
+          () => {
+            updateDots();
+            resetInterval();
+          },
+          { passive: true },
+        );
+      }
+
+      function goToSlide(index) {
+        if (!sliderTrack) return;
+        const slideWidth = sliderTrack.clientWidth;
+        sliderTrack.scrollTo({ left: slideWidth * index, behavior: "smooth" });
+        resetInterval();
+      }
+
+      function nextSlide() {
+        let nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
+      }
+
+      function prevSlide() {
+        let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+        goToSlide(prevIndex);
+      }
+
+      function resetInterval() {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, 6000);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setupMobileDropdowns();
+        // Red loading screen, white expanding reveal, then the three GSAP brand entrances.
+        let introStarted = false;
+        const startBrandIntro = () => {
+          if (introStarted) return;
+          introStarted = true;
+
+          const preloader = document.getElementById("preloader");
+          const progressLabel = document.getElementById("load-progress");
+          const preloaderLabel = document.querySelector(".preloader-label");
+          const preloaderCounter = document.querySelector(".preloader-counter");
+          const wipe = document.querySelector(".preloader-wipe");
+          const rows = Array.from(document.querySelectorAll(".brand-row"));
+          const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+          ).matches;
+          const gsapLib = window.gsap;
+          const scrollTriggerPlugin = window.ScrollTrigger;
+
+          const revealRowsWithoutGsap = () => {
+            rows.forEach((row, index) => {
+              const fromRight = index === 1;
+              row.style.opacity = "0";
+              row.style.transform = `translate3d(${fromRight ? 70 : -70}px, 0, 0)`;
+              row.style.filter = "blur(10px)";
+              if (reduceMotion || !row.animate) {
+                row.style.opacity = "1";
+                row.style.transform = "none";
+                row.style.filter = "none";
+                return;
+              }
+              row.animate(
+                [
+                  {
+                    opacity: 0,
+                    transform: `translate3d(${fromRight ? 70 : -70}px, 0, 0)`,
+                    filter: "blur(10px)",
+                  },
+                  {
+                    opacity: 1,
+                    transform: "translate3d(0, 0, 0)",
+                    filter: "blur(0px)",
+                  },
+                ],
+                {
+                  duration: 950,
+                  delay: index * 180,
+                  easing: "cubic-bezier(.16,1,.3,1)",
+                  fill: "forwards",
+                },
+              );
+            });
+          };
+
+          const setupFallbackReverseScroll = () => {
+            const intro = document.getElementById("intro-section");
+            if (!intro || !rows.length || reduceMotion) return;
+            let ticking = false;
+            const update = () => {
+              const rect = intro.getBoundingClientRect();
+              const distance = Math.max(1, intro.offsetHeight);
+              const progress = Math.max(0, Math.min(1, -rect.top / distance));
+              rows.forEach((row, index) => {
+                const direction = index === 1 ? 1 : -1;
+                const stagger = Math.max(
+                  0,
+                  Math.min(1, (progress - index * 0.08) / 0.92),
+                );
+                row.style.transform = `translate3d(${direction * stagger * 125}vw, ${-stagger * 28}px, 0)`;
+                row.style.opacity = String(1 - stagger);
+                row.style.filter = `blur(${stagger * 9}px)`;
+              });
+              ticking = false;
+            };
+            window.addEventListener(
+              "scroll",
+              () => {
+                if (!ticking) {
+                  ticking = true;
+                  window.requestAnimationFrame(update);
+                }
+              },
+              { passive: true },
+            );
+            update();
+          };
+
+          const finishWithoutGsap = () => {
+            if (!preloader) {
+              document.body.classList.remove("is-loading");
+              revealRowsWithoutGsap();
+              setupFallbackReverseScroll();
+              return;
+            }
+            const counter = { value: 0 };
+            const duration = reduceMotion ? 80 : 1100;
+            const startedAt = performance.now();
+            const tick = (now) => {
+              const progress = Math.min(1, (now - startedAt) / duration);
+              counter.value = Math.round(progress * 100);
+              if (progressLabel)
+                progressLabel.textContent = String(counter.value).padStart(
+                  2,
+                  "0",
+                );
+              if (progress < 1) {
+                requestAnimationFrame(tick);
+                return;
+              }
+              if (wipe && wipe.animate && !reduceMotion) {
+                wipe.style.opacity = "1";
+                wipe.animate(
+                  [
+                    { width: "220px", height: "12px" },
+                    { width: "120vw", height: "120vh" },
+                  ],
+                  {
+                    duration: 650,
+                    easing: "cubic-bezier(.7,0,.2,1)",
+                    fill: "forwards",
+                  },
+                ).onfinish = () => {
+                  preloader.remove();
+                  document.body.classList.remove("is-loading");
+                  revealRowsWithoutGsap();
+                  setupFallbackReverseScroll();
+                };
+              } else {
+                preloader.remove();
+                document.body.classList.remove("is-loading");
+                revealRowsWithoutGsap();
+                setupFallbackReverseScroll();
+              }
+            };
+            requestAnimationFrame(tick);
+          };
+
+          if (!preloader || !gsapLib) {
+            finishWithoutGsap();
+            return;
+          }
+
+          const gsap = gsapLib;
+          const setupBrandScrollReverse = () => {
+            if (reduceMotion || !scrollTriggerPlugin || !rows.length) {
+              setupFallbackReverseScroll();
+              return;
+            }
+            try {
+              gsap.registerPlugin(scrollTriggerPlugin);
+              const scrollOut = gsap.timeline({
+                scrollTrigger: {
+                  trigger: "#intro-section",
+                  start: "top top",
+                  end: "bottom top",
+                  scrub: 0.85,
+                  invalidateOnRefresh: true,
+                },
+              });
+              rows.forEach((row, index) => {
+                const direction = index === 1 ? 1 : -1;
+                scrollOut.to(
+                  row,
+                  {
+                    xPercent: direction * 125,
+                    y: -28,
+                    autoAlpha: 0,
+                    filter: "blur(9px)",
+                    duration: 1,
+                    ease: "none",
+                  },
+                  index * 0.12,
+                );
+              });
+            } catch (error) {
+              console.warn(
+                "Scroll animation unavailable; using fallback.",
+                error,
+              );
+              setupFallbackReverseScroll();
+            }
+          };
+
+          const progress = { value: 0 };
+          gsap.to(progress, {
+            value: 100,
+            duration: reduceMotion ? 0.2 : 1.65,
+            ease: "power2.out",
+            onUpdate: () => {
+              if (progressLabel) {
+                const value = Math.round(progress.value);
+                progressLabel.textContent =
+                  value === 100 ? "100" : String(value).padStart(2, "0");
+              }
+            },
+            onComplete: () => {
+              const reveal = gsap.timeline({
+                onComplete: () => {
+                  preloader.remove();
+                  document.body.classList.remove("is-loading");
+                  setupBrandScrollReverse();
+                },
+              });
+              reveal.to([preloaderLabel, preloaderCounter].filter(Boolean), {
+                autoAlpha: 0,
+                y: -20,
+                duration: reduceMotion ? 0.05 : 0.2,
+                ease: "power2.in",
+              });
+              if (wipe) {
+                reveal.fromTo(
+                  wipe,
+                  { autoAlpha: 1, width: "220px", height: "12px" },
+                  {
+                    autoAlpha: 1,
+                    width: "120vw",
+                    height: "120vh",
+                    duration: reduceMotion ? 0.1 : 0.72,
+                    ease: "expo.inOut",
+                  },
+                  "-=0.02",
                 );
               }
-              if (!isOpen)
-                navbar
-                  .querySelectorAll(".dropdown.expanded")
-                  .forEach((item) => item.classList.remove("expanded"));
-            }
-
-            function setupMobileDropdowns() {
-              const navbar = document.getElementById("navbar");
-              if (!navbar) return;
-              navbar
-                .querySelectorAll(":scope > .nav-links > li.dropdown")
-                .forEach((dropdown) => {
-                  const trigger = dropdown.querySelector(":scope > a");
-                  if (!trigger) return;
-                  // Remove the desktop navigation action on the parent item on touch layouts.
-                  trigger.removeAttribute("onclick");
-                  trigger.setAttribute("aria-haspopup", "true");
-                  trigger.setAttribute("aria-expanded", "false");
-                  trigger.addEventListener("click", (event) => {
-                    if (!window.matchMedia("(max-width: 950px)").matches) return;
-                    event.preventDefault();
-                    event.stopPropagation();
-                    const willExpand = !dropdown.classList.contains("expanded");
-                    navbar
-                      .querySelectorAll(":scope > .nav-links > li.dropdown.expanded")
-                      .forEach((item) => {
-                        item.classList.remove("expanded");
-                        const link = item.querySelector(":scope > a");
-                        if (link) link.setAttribute("aria-expanded", "false");
-                      });
-                    dropdown.classList.toggle("expanded", willExpand);
-                    trigger.setAttribute("aria-expanded", String(willExpand));
-                  });
-                });
-
-              document.addEventListener("click", (event) => {
-                if (!window.matchMedia("(max-width: 950px)").matches) return;
-                if (
-                  !navbar.contains(event.target) &&
-                  !event.target.closest(".menu-icon")
-                ) {
-                  navbar.classList.remove("open");
-                  navbar
-                    .querySelectorAll(".dropdown.expanded")
-                    .forEach((item) => item.classList.remove("expanded"));
-                  const menuTrigger = document.querySelector(".menu-icon");
-                  if (menuTrigger) menuTrigger.setAttribute("aria-expanded", "false");
-                }
+              reveal.set(preloader, { backgroundColor: "#f2f2f0" });
+              reveal.to(preloader, {
+                autoAlpha: 0,
+                duration: reduceMotion ? 0.03 : 0.12,
               });
-            }
-
-            // View Router & Smooth Scrolling
-            function navigateTo(viewId, targetId, slideIndex = null) {
-              const mobileNav = document.getElementById("navbar");
-              if (mobileNav && mobileNav.classList.contains("open")) {
-                mobileNav.classList.remove("open");
-              }
-
-              document.querySelectorAll(".page-view").forEach((view) => {
-                view.classList.remove("active");
+              reveal.set(preloader, { display: "none" });
+              rows.forEach((row, index) => {
+                const fromRight = index === 1;
+                reveal.fromTo(
+                  row,
+                  {
+                    x: (fromRight ? 1 : -1) * window.innerWidth * 1.12,
+                    autoAlpha: 0,
+                    filter: "blur(13px)",
+                  },
+                  {
+                    x: 0,
+                    autoAlpha: 1,
+                    filter: "blur(0px)",
+                    duration: reduceMotion ? 0.2 : 1.05,
+                    ease: "expo.out",
+                    clearProps: "transform,filter,willChange",
+                  },
+                  index === 0 ? undefined : "-=0.68",
+                );
               });
-              document.getElementById(viewId).classList.add("active");
+            },
+            onInterrupt: finishWithoutGsap,
+          });
+        };
 
-              if (slideIndex !== null && viewId === "main-view") {
-                goToSlide(slideIndex);
-              }
+        // Wait for the page assets and web fonts before starting the percentage counter.
+        const beginIntroWhenReady = () => {
+          // Never let a slow font request or a missing image keep the page locked.
+          let started = false;
+          const startOnce = () => {
+            if (started) return;
+            started = true;
+            startBrandIntro();
+          };
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(startOnce).catch(startOnce);
+            window.setTimeout(startOnce, 1800);
+          } else {
+            startOnce();
+          }
+        };
+        beginIntroWhenReady();
 
-              setTimeout(() => {
-                if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-                if (targetId) {
-                  const target = document.getElementById(targetId);
-                  if (target) {
-                    const headerOffset = 70;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition =
-                      elementPosition + window.pageYOffset - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                  }
+        // Header Scrolled State
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              window.requestAnimationFrame(() => {
+                if (window.scrollY > 20) {
+                  document.body.classList.add("scrolled");
                 } else {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  document.body.classList.remove("scrolled");
                 }
-              }, 30);
-            }
-
-            // Instagram-Style Native Slider Logic
-            const sliderTrack = document.getElementById("slider-track");
-            const dots = document.querySelectorAll(".dot");
-            const slides = document.querySelectorAll(".slide");
-            let slideInterval;
-            let currentSlide = 0;
-
-            function updateDots() {
-              if (!sliderTrack) return;
-              const slideWidth = sliderTrack.clientWidth;
-              currentSlide = Math.round(sliderTrack.scrollLeft / slideWidth);
-
-              dots.forEach((dot, i) => {
-                dot.classList.toggle("active", i === currentSlide);
+                ticking = false;
               });
+              ticking = true;
             }
+          },
+          { passive: true },
+        );
 
-            if (sliderTrack) {
-              sliderTrack.addEventListener(
-                "scroll",
-                () => {
-                  updateDots();
-                  resetInterval();
-                },
-                { passive: true },
-              );
-            }
+        resetInterval();
 
-            function goToSlide(index) {
-              if (!sliderTrack) return;
-              const slideWidth = sliderTrack.clientWidth;
-              sliderTrack.scrollTo({ left: slideWidth * index, behavior: "smooth" });
-              resetInterval();
-            }
-
-            function nextSlide() {
-              let nextIndex = (currentSlide + 1) % slides.length;
-              goToSlide(nextIndex);
-            }
-
-            function prevSlide() {
-              let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-              goToSlide(prevIndex);
-            }
-
-            function resetInterval() {
-              clearInterval(slideInterval);
-              slideInterval = setInterval(nextSlide, 6000);
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-              setupMobileDropdowns();
-              // Red loading screen, white expanding reveal, then the three GSAP brand entrances.
-              let introStarted = false;
-              const startBrandIntro = () => {
-                if (introStarted) return;
-                introStarted = true;
-
-                const preloader = document.getElementById("preloader");
-                const progressLabel = document.getElementById("load-progress");
-                const preloaderLabel = document.querySelector(".preloader-label");
-                const preloaderCounter = document.querySelector(".preloader-counter");
-                const wipe = document.querySelector(".preloader-wipe");
-                const rows = Array.from(document.querySelectorAll(".brand-row"));
-                const reduceMotion = window.matchMedia(
-                  "(prefers-reduced-motion: reduce)",
-                ).matches;
-                const gsapLib = window.gsap;
-                const scrollTriggerPlugin = window.ScrollTrigger;
-
-                const revealRowsWithoutGsap = () => {
-                  rows.forEach((row, index) => {
-                    const fromRight = index === 1;
-                    row.style.opacity = "0";
-                    row.style.transform = `translate3d(${fromRight ? 70 : -70}px, 0, 0)`;
-                    row.style.filter = "blur(10px)";
-                    if (reduceMotion || !row.animate) {
-                      row.style.opacity = "1";
-                      row.style.transform = "none";
-                      row.style.filter = "none";
-                      return;
-                    }
-                    row.animate(
-                      [
-                        {
-                          opacity: 0,
-                          transform: `translate3d(${fromRight ? 70 : -70}px, 0, 0)`,
-                          filter: "blur(10px)",
-                        },
-                        {
-                          opacity: 1,
-                          transform: "translate3d(0, 0, 0)",
-                          filter: "blur(0px)",
-                        },
-                      ],
-                      {
-                        duration: 950,
-                        delay: index * 180,
-                        easing: "cubic-bezier(.16,1,.3,1)",
-                        fill: "forwards",
-                      },
-                    );
-                  });
-                };
-
-                const setupFallbackReverseScroll = () => {
-                  const intro = document.getElementById("intro-section");
-                  if (!intro || !rows.length || reduceMotion) return;
-                  let ticking = false;
-                  const update = () => {
-                    const rect = intro.getBoundingClientRect();
-                    const distance = Math.max(1, intro.offsetHeight);
-                    const progress = Math.max(0, Math.min(1, -rect.top / distance));
-                    rows.forEach((row, index) => {
-                      const direction = index === 1 ? 1 : -1;
-                      const stagger = Math.max(
-                        0,
-                        Math.min(1, (progress - index * 0.08) / 0.92),
-                      );
-                      row.style.transform = `translate3d(${direction * stagger * 125}vw, ${-stagger * 28}px, 0)`;
-                      row.style.opacity = String(1 - stagger);
-                      row.style.filter = `blur(${stagger * 9}px)`;
-                    });
-                    ticking = false;
-                  };
-                  window.addEventListener(
-                    "scroll",
-                    () => {
-                      if (!ticking) {
-                        ticking = true;
-                        window.requestAnimationFrame(update);
-                      }
-                    },
-                    { passive: true },
-                  );
-                  update();
-                };
-
-                const finishWithoutGsap = () => {
-                  if (!preloader) {
-                    document.body.classList.remove("is-loading");
-                    revealRowsWithoutGsap();
-                    setupFallbackReverseScroll();
-                    return;
-                  }
-                  const counter = { value: 0 };
-                  const duration = reduceMotion ? 80 : 1100;
-                  const startedAt = performance.now();
-                  const tick = (now) => {
-                    const progress = Math.min(1, (now - startedAt) / duration);
-                    counter.value = Math.round(progress * 100);
-                    if (progressLabel)
-                      progressLabel.textContent = String(counter.value).padStart(
-                        2,
-                        "0",
-                      );
-                    if (progress < 1) {
-                      requestAnimationFrame(tick);
-                      return;
-      rc = source;
-                });
-              });
+        // General Interactive Items (Products/Equipments)
+        const interactiveItems = document.querySelectorAll(
+          ".interactive-item:not(.machine-category-item)",
+        );
+        interactiveItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            const parent = item.parentElement;
+            const siblings = parent.querySelectorAll(".interactive-item");
+            siblings.forEach((f) => {
+              if (f !== item) f.classList.remove("active");
             });
+            item.classList.toggle("active");
+          });
+        });
+
+        // Selectable Machine Options (CNC, VMC, HMC): preload first, then swap.
+        // A per-card request token prevents a slow earlier image overwriting a newer tap.
+        document.querySelectorAll(".selectable-machine").forEach((machine) => {
+          machine.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const container = this.closest(".machine-category-item");
+            const image =
+              container && container.querySelector(".active-machine-img");
+            if (!container || !image) return;
+
+            const source = this.getAttribute("data-img");
+            if (!source) return;
+
+            container
+              .querySelectorAll(".selectable-machine")
+              .forEach((option) => {
+                option.classList.toggle("active", option === this);
+                option.setAttribute("aria-pressed", String(option === this));
+              });
+
+            const requestId = Number(container.dataset.imageRequest || 0) + 1;
+            container.dataset.imageRequest = String(requestId);
+            const preload = new Image();
+            preload.decoding = "async";
+            preload.onload = () => {
+              if (container.dataset.imageRequest !== String(requestId)) return;
+              image.classList.add("fade-out");
+              window.requestAnimationFrame(() => {
+                if (container.dataset.imageRequest !== String(requestId))
+                  return;
+                image.src = preload.src;
+                image.alt = this.textContent.trim() + " machine";
+                image.classList.remove("fade-out");
+              });
+            };
+            preload.onerror = () => {
+              if (container.dataset.imageRequest !== String(requestId)) return;
+              // Keep the last valid image visible rather than flashing a wrong/empty image.
+              image.classList.remove("fade-out");
+              console.warn("Machine image could not be loaded:", source);
+            };
+            preload.src = source;
+          });
+        });
+      });
     </script>
   </body>
 </html>
