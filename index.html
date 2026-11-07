@@ -2378,6 +2378,66 @@
           font-size: 0.59rem;
         }
       }
+
+      /* FINAL MOBILE NAV CLEANUP: keep the literal ▾ only; remove injected pluses and hover strokes. */
+      @media (max-width: 950px) {
+        nav#navbar ul.nav-links > li.dropdown > a::after,
+        nav#navbar ul.nav-links > li.dropdown > a::before,
+        nav#navbar ul.nav-links > li.dropdown > a:hover::after,
+        nav#navbar ul.nav-links > li.dropdown > a:hover::before,
+        nav#navbar ul.nav-links > li.dropdown > a:focus::after,
+        nav#navbar ul.nav-links > li.dropdown > a:focus::before,
+        nav#navbar ul.nav-links > li.dropdown.expanded > a::after,
+        nav#navbar ul.nav-links > li.dropdown.expanded > a::before {
+          content: none !important;
+          display: none !important;
+          background: none !important;
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+
+        nav#navbar ul.nav-links > li,
+        nav#navbar ul.nav-links > li.dropdown,
+        nav#navbar ul.nav-links > li.dropdown > a,
+        nav#navbar ul.nav-links > li.dropdown > a:hover,
+        nav#navbar ul.nav-links > li.dropdown > a:focus,
+        nav#navbar ul.nav-links > li.dropdown > a:active {
+          text-decoration: none !important;
+          border-top: 0 !important;
+          border-bottom: 0 !important;
+          box-shadow: none !important;
+          background-image: none !important;
+        }
+
+        nav#navbar ul.nav-links > li.dropdown > a {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          gap: 8px !important;
+          width: 100%;
+          min-height: 48px;
+          height: auto;
+          padding: 13px 18px !important;
+          line-height: 1.25 !important;
+          position: static !important;
+        }
+
+        nav#navbar ul.nav-links > li.dropdown > a span,
+        nav#navbar ul.nav-links > li.dropdown > a .plus,
+        nav#navbar ul.nav-links > li.dropdown > a .accordion-icon,
+        nav#navbar ul.nav-links > li.dropdown > a .dropdown-icon-plus {
+          display: none !important;
+        }
+
+        nav#navbar ul.nav-links > li.dropdown > .dropdown-menu,
+        nav#navbar ul.nav-links > li.dropdown > .dropdown-menu li,
+        nav#navbar ul.nav-links > li.dropdown > .dropdown-menu li a {
+          text-decoration: none !important;
+          border: 0 !important;
+          box-shadow: none !important;
+          background-image: none !important;
+        }
+      }
     </style>
   </head>
   <body class="is-loading">
