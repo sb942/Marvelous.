@@ -1869,6 +1869,35 @@
         }
       }
 
+      /* Mobile dropdown triggers: remove separator/underline strokes on Quality and Machines. */
+      @media (max-width: 950px) {
+        nav#navbar ul.nav-links > li.dropdown,
+        nav#navbar ul.nav-links > li.dropdown:last-child {
+          border-bottom: 0 !important;
+          box-shadow: none !important;
+        }
+        nav#navbar ul.nav-links > li.dropdown > a,
+        nav#navbar ul.nav-links > li.dropdown > a:hover,
+        nav#navbar ul.nav-links > li.dropdown > a:focus,
+        nav#navbar ul.nav-links > li.dropdown > a:active {
+          border: 0 !important;
+          border-bottom: 0 !important;
+          box-shadow: none !important;
+          text-decoration: none !important;
+          outline: none;
+          background-image: none !important;
+        }
+        nav#navbar ul.nav-links > li.dropdown > a::before {
+          content: none !important;
+          display: none !important;
+        }
+        nav#navbar ul.nav-links > li.dropdown > .dropdown-menu,
+        nav#navbar ul.nav-links > li.dropdown > .dropdown-menu li {
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+      }
+
       /* Machine preview: keep the current photo visible until the selected file is ready. */
       .machine-display {
         isolation: isolate;
@@ -1894,7 +1923,6 @@
         }
       }
 
-
       /* =====================================================
          RED LOADER + THREE-ROW BRAND REVEAL
          ===================================================== */
@@ -1917,7 +1945,9 @@
         position: absolute;
         top: clamp(24px, 4vw, 58px);
         left: clamp(24px, 5vw, 76px);
-        font: 700 11px/1.4 "Inter", sans-serif;
+        font:
+          700 11px/1.4 "Inter",
+          sans-serif;
         letter-spacing: 0.24em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.78);
@@ -2001,7 +2031,12 @@
         bottom: 0;
         left: 2%;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(45, 40, 40, 0.12), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(45, 40, 40, 0.12),
+          transparent
+        );
         content: "";
       }
 
@@ -2343,12 +2378,13 @@
           font-size: 0.59rem;
         }
       }
-
     </style>
   </head>
   <body class="is-loading">
     <div id="preloader" role="status" aria-label="Loading Marvelous Precision">
-      <div class="preloader-label">MARVELOUS PRECISION / DIGITAL EXPERIENCE</div>
+      <div class="preloader-label">
+        MARVELOUS PRECISION / DIGITAL EXPERIENCE
+      </div>
       <div class="preloader-counter" aria-live="polite">
         <span id="load-progress">00</span><span class="preloader-unit">%</span>
       </div>
@@ -2358,7 +2394,22 @@
     <!-- HEADER / NAVBAR -->
     <header id="main-header">
       <div class="header-inner">
-        <div class="menu-icon" role="button" tabindex="0" aria-label="Open navigation" aria-expanded="false" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleMenu();}">☰</div>
+        <div
+          class="menu-icon"
+          role="button"
+          tabindex="0"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          onclick="toggleMenu()"
+          onkeydown="
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              toggleMenu();
+            }
+          "
+        >
+          ☰
+        </div>
         <div class="logo-container" onclick="navigateTo('main-view', null, 0)">
           <img
             src="1.png"
@@ -2439,15 +2490,22 @@
     <!-- VIEW 1: MAIN HOME VIEW -->
     <div id="main-view" class="page-view active">
       <!-- THREE-STAGE BRAND INTRO -->
-      <section id="intro-section" aria-label="Marvelous Precision company brands">
+      <section
+        id="intro-section"
+        aria-label="Marvelous Precision company brands"
+      >
         <div class="brand-stage">
           <div class="brand-row brand-row--marvelous">
             <div class="brand-mark">
               <img src="1.png" alt="Marvelous Precision logo" />
             </div>
             <div class="brand-copy">
-              <h1 class="brand-title brand-title--marvelous">MARVELOUS PRECISION PVT. LTD.</h1>
-              <p class="brand-subtitle">Manufacturer of Precision Machined Components</p>
+              <h1 class="brand-title brand-title--marvelous">
+                MARVELOUS PRECISION PVT. LTD.
+              </h1>
+              <p class="brand-subtitle">
+                Manufacturer of Precision Machined Components
+              </p>
             </div>
           </div>
 
@@ -2456,7 +2514,9 @@
               <img src="3.png" alt="Sonical Engineering logo" />
             </div>
             <div class="brand-copy">
-              <h2 class="brand-title brand-title--sonical">SONICAL ENGINEERING</h2>
+              <h2 class="brand-title brand-title--sonical">
+                SONICAL ENGINEERING
+              </h2>
             </div>
           </div>
 
@@ -2465,7 +2525,9 @@
               <img src="2.png" alt="Marvelous Cutting Edge logo" />
             </div>
             <div class="brand-copy">
-              <h2 class="brand-title brand-title--cutting">MARVELOUS CUTTING EDGE</h2>
+              <h2 class="brand-title brand-title--cutting">
+                MARVELOUS CUTTING EDGE
+              </h2>
               <p class="brand-subtitle--machining">PRECISION MACHINING</p>
             </div>
           </div>
@@ -2759,13 +2821,31 @@
             <div class="item-text-content">
               <span class="interactive-name">CNC MACHINES</span>
               <div class="selectable-machine-list">
-                <div class="selectable-machine active" role="button" tabindex="0" aria-pressed="true" data-img="c1.png">
+                <div
+                  class="selectable-machine active"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="true"
+                  data-img="c1.png"
+                >
                   SPINNER 15 J (Chuck 10")
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="c2.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="c2.png"
+                >
                   GOODWAY GLS 2000 (Chuck 8")
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="c3.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="c3.png"
+                >
                   ASKAR MICRON SPINNER 18 (Chuck 12")
                 </div>
               </div>
@@ -2788,13 +2868,31 @@
             <div class="item-text-content">
               <span class="interactive-name">VMC MACHINES</span>
               <div class="selectable-machine-list">
-                <div class="selectable-machine active" role="button" tabindex="0" aria-pressed="true" data-img="v1.png">
+                <div
+                  class="selectable-machine active"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="true"
+                  data-img="v1.png"
+                >
                   COSMOS CVM 1060 (X-1060, Y-610, Z-600)
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="v2.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="v2.png"
+                >
                   BFW BMV 45TC24++
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="v3.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="v3.png"
+                >
                   COSMOS CVM 800
                 </div>
               </div>
@@ -2817,13 +2915,31 @@
             <div class="item-text-content">
               <span class="interactive-name">HMC MACHINES</span>
               <div class="selectable-machine-list">
-                <div class="selectable-machine active" role="button" tabindex="0" aria-pressed="true" data-img="h1.png">
+                <div
+                  class="selectable-machine active"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="true"
+                  data-img="h1.png"
+                >
                   BFW PRIMA 44 Pro BT40
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="h2.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="h2.png"
+                >
                   BFW PRIMA 54 Pro
                 </div>
-                <div class="selectable-machine" role="button" tabindex="0" aria-pressed="false" data-img="h3.png">
+                <div
+                  class="selectable-machine"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="false"
+                  data-img="h3.png"
+                >
                   BFW PRIMA 55 PRO BT50
                 </div>
               </div>
@@ -3150,41 +3266,56 @@
         const trigger = document.querySelector(".menu-icon");
         if (trigger) {
           trigger.setAttribute("aria-expanded", String(isOpen));
-          trigger.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+          trigger.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation" : "Open navigation",
+          );
         }
-        if (!isOpen) navbar.querySelectorAll(".dropdown.expanded").forEach((item) => item.classList.remove("expanded"));
+        if (!isOpen)
+          navbar
+            .querySelectorAll(".dropdown.expanded")
+            .forEach((item) => item.classList.remove("expanded"));
       }
 
       function setupMobileDropdowns() {
         const navbar = document.getElementById("navbar");
         if (!navbar) return;
-        navbar.querySelectorAll(":scope > .nav-links > li.dropdown").forEach((dropdown) => {
-          const trigger = dropdown.querySelector(":scope > a");
-          if (!trigger) return;
-          // Remove the desktop navigation action on the parent item on touch layouts.
-          trigger.removeAttribute("onclick");
-          trigger.setAttribute("aria-haspopup", "true");
-          trigger.setAttribute("aria-expanded", "false");
-          trigger.addEventListener("click", (event) => {
-            if (!window.matchMedia("(max-width: 950px)").matches) return;
-            event.preventDefault();
-            event.stopPropagation();
-            const willExpand = !dropdown.classList.contains("expanded");
-            navbar.querySelectorAll(":scope > .nav-links > li.dropdown.expanded").forEach((item) => {
-              item.classList.remove("expanded");
-              const link = item.querySelector(":scope > a");
-              if (link) link.setAttribute("aria-expanded", "false");
+        navbar
+          .querySelectorAll(":scope > .nav-links > li.dropdown")
+          .forEach((dropdown) => {
+            const trigger = dropdown.querySelector(":scope > a");
+            if (!trigger) return;
+            // Remove the desktop navigation action on the parent item on touch layouts.
+            trigger.removeAttribute("onclick");
+            trigger.setAttribute("aria-haspopup", "true");
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.addEventListener("click", (event) => {
+              if (!window.matchMedia("(max-width: 950px)").matches) return;
+              event.preventDefault();
+              event.stopPropagation();
+              const willExpand = !dropdown.classList.contains("expanded");
+              navbar
+                .querySelectorAll(":scope > .nav-links > li.dropdown.expanded")
+                .forEach((item) => {
+                  item.classList.remove("expanded");
+                  const link = item.querySelector(":scope > a");
+                  if (link) link.setAttribute("aria-expanded", "false");
+                });
+              dropdown.classList.toggle("expanded", willExpand);
+              trigger.setAttribute("aria-expanded", String(willExpand));
             });
-            dropdown.classList.toggle("expanded", willExpand);
-            trigger.setAttribute("aria-expanded", String(willExpand));
           });
-        });
 
         document.addEventListener("click", (event) => {
           if (!window.matchMedia("(max-width: 950px)").matches) return;
-          if (!navbar.contains(event.target) && !event.target.closest(".menu-icon")) {
+          if (
+            !navbar.contains(event.target) &&
+            !event.target.closest(".menu-icon")
+          ) {
             navbar.classList.remove("open");
-            navbar.querySelectorAll(".dropdown.expanded").forEach((item) => item.classList.remove("expanded"));
+            navbar
+              .querySelectorAll(".dropdown.expanded")
+              .forEach((item) => item.classList.remove("expanded"));
             const menuTrigger = document.querySelector(".menu-icon");
             if (menuTrigger) menuTrigger.setAttribute("aria-expanded", "false");
           }
@@ -3288,7 +3419,9 @@
           const preloaderCounter = document.querySelector(".preloader-counter");
           const wipe = document.querySelector(".preloader-wipe");
           const rows = Array.from(document.querySelectorAll(".brand-row"));
-          const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+          ).matches;
           const gsapLib = window.gsap;
           const scrollTriggerPlugin = window.ScrollTrigger;
 
@@ -3306,10 +3439,23 @@
               }
               row.animate(
                 [
-                  { opacity: 0, transform: `translate3d(${fromRight ? 70 : -70}px, 0, 0)`, filter: "blur(10px)" },
-                  { opacity: 1, transform: "translate3d(0, 0, 0)", filter: "blur(0px)" },
+                  {
+                    opacity: 0,
+                    transform: `translate3d(${fromRight ? 70 : -70}px, 0, 0)`,
+                    filter: "blur(10px)",
+                  },
+                  {
+                    opacity: 1,
+                    transform: "translate3d(0, 0, 0)",
+                    filter: "blur(0px)",
+                  },
                 ],
-                { duration: 950, delay: index * 180, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" },
+                {
+                  duration: 950,
+                  delay: index * 180,
+                  easing: "cubic-bezier(.16,1,.3,1)",
+                  fill: "forwards",
+                },
               );
             });
           };
@@ -3324,19 +3470,26 @@
               const progress = Math.max(0, Math.min(1, -rect.top / distance));
               rows.forEach((row, index) => {
                 const direction = index === 1 ? 1 : -1;
-                const stagger = Math.max(0, Math.min(1, (progress - index * 0.08) / 0.92));
+                const stagger = Math.max(
+                  0,
+                  Math.min(1, (progress - index * 0.08) / 0.92),
+                );
                 row.style.transform = `translate3d(${direction * stagger * 125}vw, ${-stagger * 28}px, 0)`;
                 row.style.opacity = String(1 - stagger);
                 row.style.filter = `blur(${stagger * 9}px)`;
               });
               ticking = false;
             };
-            window.addEventListener("scroll", () => {
-              if (!ticking) {
-                ticking = true;
-                window.requestAnimationFrame(update);
-              }
-            }, { passive: true });
+            window.addEventListener(
+              "scroll",
+              () => {
+                if (!ticking) {
+                  ticking = true;
+                  window.requestAnimationFrame(update);
+                }
+              },
+              { passive: true },
+            );
             update();
           };
 
@@ -3353,7 +3506,11 @@
             const tick = (now) => {
               const progress = Math.min(1, (now - startedAt) / duration);
               counter.value = Math.round(progress * 100);
-              if (progressLabel) progressLabel.textContent = String(counter.value).padStart(2, "0");
+              if (progressLabel)
+                progressLabel.textContent = String(counter.value).padStart(
+                  2,
+                  "0",
+                );
               if (progress < 1) {
                 requestAnimationFrame(tick);
                 return;
@@ -3361,8 +3518,15 @@
               if (wipe && wipe.animate && !reduceMotion) {
                 wipe.style.opacity = "1";
                 wipe.animate(
-                  [{ width: "220px", height: "12px" }, { width: "120vw", height: "120vh" }],
-                  { duration: 650, easing: "cubic-bezier(.7,0,.2,1)", fill: "forwards" },
+                  [
+                    { width: "220px", height: "12px" },
+                    { width: "120vw", height: "120vh" },
+                  ],
+                  {
+                    duration: 650,
+                    easing: "cubic-bezier(.7,0,.2,1)",
+                    fill: "forwards",
+                  },
                 ).onfinish = () => {
                   preloader.remove();
                   document.body.classList.remove("is-loading");
@@ -3403,17 +3567,24 @@
               });
               rows.forEach((row, index) => {
                 const direction = index === 1 ? 1 : -1;
-                scrollOut.to(row, {
-                  xPercent: direction * 125,
-                  y: -28,
-                  autoAlpha: 0,
-                  filter: "blur(9px)",
-                  duration: 1,
-                  ease: "none",
-                }, index * 0.12);
+                scrollOut.to(
+                  row,
+                  {
+                    xPercent: direction * 125,
+                    y: -28,
+                    autoAlpha: 0,
+                    filter: "blur(9px)",
+                    duration: 1,
+                    ease: "none",
+                  },
+                  index * 0.12,
+                );
               });
             } catch (error) {
-              console.warn("Scroll animation unavailable; using fallback.", error);
+              console.warn(
+                "Scroll animation unavailable; using fallback.",
+                error,
+              );
               setupFallbackReverseScroll();
             }
           };
@@ -3426,7 +3597,8 @@
             onUpdate: () => {
               if (progressLabel) {
                 const value = Math.round(progress.value);
-                progressLabel.textContent = value === 100 ? "100" : String(value).padStart(2, "0");
+                progressLabel.textContent =
+                  value === 100 ? "100" : String(value).padStart(2, "0");
               }
             },
             onComplete: () => {
@@ -3444,20 +3616,42 @@
                 ease: "power2.in",
               });
               if (wipe) {
-                reveal.fromTo(wipe,
+                reveal.fromTo(
+                  wipe,
                   { autoAlpha: 1, width: "220px", height: "12px" },
-                  { autoAlpha: 1, width: "120vw", height: "120vh", duration: reduceMotion ? 0.1 : 0.72, ease: "expo.inOut" },
+                  {
+                    autoAlpha: 1,
+                    width: "120vw",
+                    height: "120vh",
+                    duration: reduceMotion ? 0.1 : 0.72,
+                    ease: "expo.inOut",
+                  },
                   "-=0.02",
                 );
               }
               reveal.set(preloader, { backgroundColor: "#f2f2f0" });
-              reveal.to(preloader, { autoAlpha: 0, duration: reduceMotion ? 0.03 : 0.12 });
+              reveal.to(preloader, {
+                autoAlpha: 0,
+                duration: reduceMotion ? 0.03 : 0.12,
+              });
               reveal.set(preloader, { display: "none" });
               rows.forEach((row, index) => {
                 const fromRight = index === 1;
-                reveal.fromTo(row,
-                  { x: (fromRight ? 1 : -1) * window.innerWidth * 1.12, autoAlpha: 0, filter: "blur(13px)" },
-                  { x: 0, autoAlpha: 1, filter: "blur(0px)", duration: reduceMotion ? 0.2 : 1.05, ease: "expo.out", clearProps: "transform,filter,willChange" },
+                reveal.fromTo(
+                  row,
+                  {
+                    x: (fromRight ? 1 : -1) * window.innerWidth * 1.12,
+                    autoAlpha: 0,
+                    filter: "blur(13px)",
+                  },
+                  {
+                    x: 0,
+                    autoAlpha: 1,
+                    filter: "blur(0px)",
+                    duration: reduceMotion ? 0.2 : 1.05,
+                    ease: "expo.out",
+                    clearProps: "transform,filter,willChange",
+                  },
                   index === 0 ? undefined : "-=0.68",
                 );
               });
@@ -3529,18 +3723,21 @@
             event.stopPropagation();
 
             const container = this.closest(".machine-category-item");
-            const image = container && container.querySelector(".active-machine-img");
+            const image =
+              container && container.querySelector(".active-machine-img");
             if (!container || !image) return;
 
             const source = this.getAttribute("data-img");
             if (!source) return;
 
-            container.querySelectorAll(".selectable-machine").forEach((option) => {
-              option.classList.toggle("active", option === this);
-              option.setAttribute("aria-pressed", String(option === this));
-            });
+            container
+              .querySelectorAll(".selectable-machine")
+              .forEach((option) => {
+                option.classList.toggle("active", option === this);
+                option.setAttribute("aria-pressed", String(option === this));
+              });
 
-            const requestId = (Number(container.dataset.imageRequest || 0) + 1);
+            const requestId = Number(container.dataset.imageRequest || 0) + 1;
             container.dataset.imageRequest = String(requestId);
             const preload = new Image();
             preload.decoding = "async";
@@ -3548,7 +3745,8 @@
               if (container.dataset.imageRequest !== String(requestId)) return;
               image.classList.add("fade-out");
               window.requestAnimationFrame(() => {
-                if (container.dataset.imageRequest !== String(requestId)) return;
+                if (container.dataset.imageRequest !== String(requestId))
+                  return;
                 image.src = preload.src;
                 image.alt = this.textContent.trim() + " machine";
                 image.classList.remove("fade-out");
